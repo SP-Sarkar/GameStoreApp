@@ -30,7 +30,7 @@ namespace GameStore.Data.Entities
         [DataType(DataType.Html)]
         public string Description { get; set; }
 
-        // 1--1 [GameTags]
+        // 1--M [GameTags]
         [Display(Name = "Tag Label")]
         [Column("gameTag")]
         [Required]
@@ -38,6 +38,16 @@ namespace GameStore.Data.Entities
 
         [ForeignKey(nameof(TagId))]
         public virtual Tag Tag { get; set; }
+
+        // 1--M [GameDeveloper]
+        [Display(Name = "Developer Company")]
+        [Column("gameDeveloper")]
+        [Required]
+        public int GameDeveloperId { get; set; }
+
+        [ForeignKey(nameof(GameDeveloperId))]
+        public virtual GameDeveloper GameDeveloper { get; set; }
+
 
 
     }

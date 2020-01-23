@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GameStore.Data.Entities
@@ -6,6 +7,11 @@ namespace GameStore.Data.Entities
     [Table("gameDev")]
     public class GameDeveloper : BaseEntity
     {
+        public GameDeveloper()
+        {
+            Games = new HashSet<Game>();
+        }
+
         [Display(Name = "Developer company Name")]
         [Required]
         [StringLength(400),Column("gameDevName")]
@@ -24,5 +30,7 @@ namespace GameStore.Data.Entities
         [Display(Name = "Developer company Logo")]
         [StringLength(500)]
         public string Logo { get; set; }
+
+        public ICollection<Game> Games { get; set; }
     }
 }
