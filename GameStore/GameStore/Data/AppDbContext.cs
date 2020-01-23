@@ -13,7 +13,7 @@ namespace GameStore.Data
             : base(options)
         {
         }
-
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }
