@@ -16,5 +16,6 @@ namespace GameStore.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<GameDeveloper> GameDevelopers { get; set; }
+        public DbSet<GameImage> GameImages { get; set; }
     }
 }
