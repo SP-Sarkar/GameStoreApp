@@ -10,6 +10,7 @@ namespace GameStore.Data.Entities
         public Game()
         {
             GameImages = new HashSet<GameImage>();
+            GameCategories = new HashSet<GameCategory>();
         }
 
         [Display(Name = "Game Name")]
@@ -56,5 +57,9 @@ namespace GameStore.Data.Entities
         // M--M [Game/GameImages]
         [Display(Name = "Game Images")]
         public ICollection<GameImage> GameImages { get; set; }
+
+        // M--M [Game/GameCategories]
+        [Display(Name = "Game Categories")]
+        public ICollection<GameCategory> GameCategories { get; set; }
     }
 }
