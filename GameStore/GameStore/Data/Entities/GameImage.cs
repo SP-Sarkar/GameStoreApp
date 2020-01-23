@@ -14,6 +14,11 @@ namespace GameStore.Data.Entities
         [StringLength(1000)]
         public string AlternativeText { get; set; }
 
-        
+        [Display(Name = "Game Name")]
+        public int GameId { get; set; }
+
+        [ForeignKey(nameof(GameId))]
+        public virtual Game Game { get; set; }
+
     }
 }

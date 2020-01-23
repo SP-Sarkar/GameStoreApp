@@ -7,6 +7,11 @@ namespace GameStore.Data.Entities
     [Table("games")]
     public class Game : BaseEntity
     {
+        public Game()
+        {
+            GameImages = new HashSet<GameImage>();
+        }
+
         [Display(Name = "Game Name")]
         [Column("gameName")]
         [Required, StringLength(200)]
@@ -48,7 +53,8 @@ namespace GameStore.Data.Entities
         [ForeignKey(nameof(GameDeveloperId))]
         public virtual GameDeveloper GameDeveloper { get; set; }
 
-
-
+        // M--M [Game/GameImages]
+        [Display(Name = "Game Images")]
+        public ICollection<GameImage> GameImages { get; set; }
     }
 }
