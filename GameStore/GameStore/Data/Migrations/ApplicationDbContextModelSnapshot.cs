@@ -89,19 +89,6 @@ namespace GameStore.Data.Migrations
                     b.ToTable("games");
                 });
 
-            modelBuilder.Entity("GameStore.Data.Entities.GameCategory", b =>
-                {
-                    b.Property<int>("GameId");
-
-                    b.Property<int>("CategoryId");
-
-                    b.HasKey("GameId", "CategoryId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("GameCategories");
-                });
-
             modelBuilder.Entity("GameStore.Data.Entities.GameDeveloper", b =>
                 {
                     b.Property<int>("Id")
@@ -364,19 +351,6 @@ namespace GameStore.Data.Migrations
                     b.HasOne("GameStore.Data.Entities.Tag", "Tag")
                         .WithMany("Games")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("GameStore.Data.Entities.GameCategory", b =>
-                {
-                    b.HasOne("GameStore.Data.Entities.Category", "Category")
-                        .WithMany("GameCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("GameStore.Data.Entities.Game", "Game")
-                        .WithMany("GameCategories")
-                        .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
