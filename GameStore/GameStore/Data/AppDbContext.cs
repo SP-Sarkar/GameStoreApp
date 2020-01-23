@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using GameStore.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,5 +13,7 @@ namespace GameStore.Data
             : base(options)
         {
         }
+
+        public DbSet<Category> Categories { get; set; }
     }
 }
