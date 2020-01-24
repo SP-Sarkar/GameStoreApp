@@ -32,6 +32,17 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Tags
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a asp-area="Admin" asp-action="Index" asp-controller="Tags" asp-route-active="active" class="dropdown-item">All Tags</a>
+                                <a asp-area="Admin" asp-action="Index" asp-controller="Tags" asp-route-active="notactive" class="dropdown-item">All Deactivate Tags</a>
+                                <div class="dropdown-divider"></div>
+                                <a asp-area="Admin" asp-action="CreateTag" asp-controller="Tags" class="dropdown-item">Create Tags</a>
+                            </div>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
