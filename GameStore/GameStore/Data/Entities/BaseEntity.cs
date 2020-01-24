@@ -13,13 +13,13 @@ namespace GameStore.Data.Entities
         [Display(Name="Added On")]
         [DataType(DataType.DateTime)]
         [Required]
-        [DisplayFormat(ApplyFormatInEditMode = true,DataFormatString = "{0:dd/mm/yyyy hh:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true,DataFormatString = "{0:dd MMM yyyy HH:mm tt}")]
         public DateTime CTime { get; set; }
 
         [Display(Name = "Updated on")]
         [DataType(DataType.DateTime)]
         [Required]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy hh:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy HH:mm tt}")]
         public DateTime UTime { get; set; }
 
         [Display(Name = "Active")]
