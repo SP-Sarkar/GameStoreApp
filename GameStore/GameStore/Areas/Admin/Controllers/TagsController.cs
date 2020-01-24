@@ -153,8 +153,34 @@ namespace GameStore.Areas.Admin.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw;
+                return NotFound();
             }
+        }
+
+        [HttpPost]
+        [Route(template: "delete-tag-post")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteTagPost(string guidValue)
+        {
+            try
+            {
+                if (guidValue == null) return NotFound();
+                if (Guid.TryParse(guidValue, out Guid parsedGuid))
+                {
+                    Tag tag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+                    if (tag == null) return NotFound();
+                    tag.IsDeleted = true;
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index), new { active = "notactive" });
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+
         }
 
     }
