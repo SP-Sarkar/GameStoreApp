@@ -213,5 +213,25 @@ namespace GameStore.Areas.Admin.Controllers
 
         }
 
+
+        [HttpPost]
+        [Route(template:"activate-tag")]
+        public async Task<IActionResult> ActivateTag(string guidValue)
+        {
+            try
+            {
+                if (guidValue == null) return NotFound();
+                if (!Guid.TryParse(guidValue, out Guid gValue)) return NotFound();
+                var oldTag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == gValue);
+                oldTag.IsDeleted = false;
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new {active = "active"});
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
     }
 }
