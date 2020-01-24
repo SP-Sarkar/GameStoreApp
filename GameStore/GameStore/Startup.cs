@@ -52,7 +52,7 @@ namespace GameStore
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                //DbSeeder.SeedData(context);
+                DbSeeder.SeedData(context);
             }
             else
             {
@@ -71,7 +71,6 @@ namespace GameStore
             {
                 routes.MapRoute(
                     name: "areas",
-                    template: "{area:Admin}/{controller=Home}/{action=Index}/{id?}"
                 );
 
                 // routes.MapRoute(
