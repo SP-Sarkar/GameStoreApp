@@ -56,11 +56,19 @@
                                 }
                             </td>
                             <td>
-                                <div class="btn-group btn-group-sm" role="group" aria-label="">
-                                    <a asp-action="EditTag" asp-route-name="@item.Name" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Edit</a>
-                                    <a asp-action="details" asp-route-name="@item.Name" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Details</a>
-                                    <a asp-action="Delete" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-danger">Delete</a>
-                                </div>
+                                @* When using many forms in same page. Main index or list View *@
+                                <form asp-action="ActivateTag" asp-route-guidValue="@item.GuidValue" method="post">
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="">
+                                        <a asp-action="EditTag" asp-route-name="@item.Name" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Edit</a>
+                                        <a asp-action="Details" asp-route-name="@item.Name" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Details</a>
+                                        @if (item.IsDeleted)
+                                        {
+@*                                             <input type="hidden" asp-for="@item.GuidValue"/> *@
+                                            <input type="submit" value="Activate" class="btn btn-success"/>
+                                        }
+                                        <a asp-action="Delete" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </form>
                             </td>
                         </tr>
                     }
