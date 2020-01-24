@@ -113,5 +113,49 @@ namespace GameStore.Areas.Admin.Controllers
                 return BadRequest();
             }
         }
+
+        //GET:Delete
+        [HttpGet]
+        [Route("delete-tag/{guid}")]
+        public IActionResult Delete(string guid)
+        {
+            Tag tag = null;
+            if (guid == null) return NotFound();
+            if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
+            else
+            {
+                tag = _db.Tags.FirstOrDefault(t => t.GuidValue == parsedGuid);
+            }
+
+            if (tag != null) return View(tag);
+            return NotFound();
+        }
+
+        //Post:Delete
+        [HttpPost]
+        [Route("delete-tag-permanently")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteTagPostPermanently(string guidValue)
+        {
+            try
+            {
+                if (guidValue == null) return NotFound();
+                if (Guid.TryParse(guidValue, out Guid parsedGuid))
+                {
+                    Tag tag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+                    if (tag == null) return NotFound();
+                    _db.Tags.Remove(tag);
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
     }
 }
