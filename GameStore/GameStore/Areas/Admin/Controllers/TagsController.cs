@@ -21,6 +21,10 @@ namespace GameStore.Areas.Admin.Controllers
             _db = db;
         }
 
+        public IActionResult Index()
+        {
+            throw new NotImplementedException();
+        }
 
         [HttpGet]
         [Route(template: "create-tag")]
