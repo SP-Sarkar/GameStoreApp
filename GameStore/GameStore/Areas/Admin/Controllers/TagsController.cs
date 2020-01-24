@@ -70,5 +70,44 @@ namespace GameStore.Areas.Admin.Controllers
         }
 
 
+        //GET:edit
+        [HttpGet]
+        [Route(template: "edit-tag/{name}/{guid}")]
+        public async Task<IActionResult> EditTag(string name, string guid)
+        {
+            Tag tag = null;
+            if (guid == null) return NotFound();
+            if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
+            else
+            {
+                tag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+            }
+
+            if (tag != null) return View(tag);
+            return NotFound();
+        }
+
+        //Post:Edit
+        [HttpPost]
+        [Route("edit-tag-post")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditTagPost(Tag tag)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return View("EditTag", tag);
+                var oldTag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == tag.GuidValue);
+
+                oldTag.UTime = DateTime.Now;
+                oldTag.Name = tag.Name;
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), new { name = oldTag.Name, guid = oldTag.GuidValue.ToString() });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest();
+            }
+        }
     }
 }
