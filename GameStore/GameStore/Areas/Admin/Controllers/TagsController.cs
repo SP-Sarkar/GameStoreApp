@@ -176,7 +176,7 @@ namespace GameStore.Areas.Admin.Controllers
                     if (tag == null) return NotFound();
                     _db.Tags.Remove(tag);
                     await _db.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), new { active = "notactive" });
                 }
                 return NotFound();
             }
