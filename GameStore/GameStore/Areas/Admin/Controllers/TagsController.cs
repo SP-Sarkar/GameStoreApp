@@ -52,5 +52,23 @@ namespace GameStore.Areas.Admin.Controllers
             }
         }
 
+        // GET:details
+        [HttpGet]
+        [Route("details/{name}/{guid}")]
+        public async Task<IActionResult> Details(string name, string guid)
+        {
+            Tag tag = null;
+            if (guid == null) return NotFound();
+            if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
+            else
+            {
+                tag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+            }
+
+            if (tag != null) return View(tag);
+            return NotFound();
+        }
+
+
     }
 }
