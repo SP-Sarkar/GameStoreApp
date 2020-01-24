@@ -21,5 +21,36 @@ namespace GameStore.Areas.Admin.Controllers
             _db = db;
         }
 
+
+        [HttpGet]
+        [Route(template: "create-tag")]
+        public IActionResult CreateTag()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("create-tag-post")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateTagPost(Tag tag)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return View("CreateTag", tag);
+                tag.CTime = DateTime.Now;
+                tag.UTime = DateTime.Now;
+                tag.GuidValue = Guid.NewGuid();
+                tag.IsDeleted = false;
+                _db.Tags.Add(tag);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), new { name = tag.Name, guid = tag.GuidValue.ToString() });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest();
+            }
+        }
+
     }
 }
