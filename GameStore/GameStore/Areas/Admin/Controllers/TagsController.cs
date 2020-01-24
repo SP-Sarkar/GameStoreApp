@@ -47,6 +47,10 @@ namespace GameStore.Areas.Admin.Controllers
                     model.Tags = _db.Tags.Where(t => t.IsDeleted == true).ToList();
                     model.Title = "All Deleted Tags";
                 }
+                else
+                {
+                    return NotFound();
+                }
             }
             else
             {
