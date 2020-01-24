@@ -1,0 +1,74 @@
+﻿@model GameStore.Areas.Admin.Models.ViewModels.TagListViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="mt-lg-5">
+    @if(!Model.Tags.Any())
+    {
+        <div class="row">
+            <div class="col-12">
+                <h3 class="display-4">No tags has been created</h3>
+                <p>To create new tag click here.<a  asp-action="CreateTag">Create Tag</a></p>   
+            </div>
+        </div>
+    }
+    else
+    {
+
+    <div class="row">
+        <div class="col-6">
+            <h3>@Model.Title</h3>
+        </div>
+        <div class="col-6">
+            <div class="btn-group-sm float-right" role="group" aria-label="">
+                <a asp-action="CreateTag" asp-route-active="active" class="btn btn-dark"> Create Tags</a>
+                <a asp-action="Index" asp-route-active="active" class="btn btn-dark"> Active Tags</a>
+                <a asp-action="Index" asp-route-active="notactive" class="btn btn-dark">Deleted Tags</a>
+                <a asp-action="Index" class="btn btn-dark">All Tags</a>
+            </div>
+        </div>
+    </div>
+
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-hover table-bordered ">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.Name)</th>
+                        <th>@Html.DisplayNameFor(m => m.NumberOProducts)</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.Tags)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(model => item.Name)</td>
+                            <td>
+                                @if (item.Games.Any())
+                                {
+                                    <a href=#><span class="badge badge-light">@item.Games.Count()</span></a>
+                                }
+                                else
+                                {
+                                    <p>No Products</p>
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group btn-sm" role="group" aria-label="">
+                                    <a asp-action="EditTag" asp-route-name="@item.Name" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Edit</a>
+                                    <a asp-action="details" asp-route-name="@item.Name" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Details</a>
+                                    <a asp-action="Delete" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+}
+
+</div>
+
