@@ -21,9 +21,39 @@ namespace GameStore.Areas.Admin.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        [Route(template: "")]
+        public IActionResult Index(string active = null)
         {
-            throw new NotImplementedException();
+            TagListViewModel model = new TagListViewModel();
+
+            // getting the queryString
+            model.QueryString = Request.Query[nameof(active)];
+            model.Tags = null;
+
+            // fetching tags based on querystring.
+            // if queryString is active then All active tags will be displayed
+            // if queryString is nonactive then all non active querystring will be displayed.
+            // else all the tags will be displayed.
+            if (model.QueryString != null)
+            {
+                if (string.Compare(model.QueryString, "active", StringComparison.Ordinal) == 0)
+                {
+                    model.Tags = _db.Tags.Where(t => t.IsDeleted == false).ToList();
+                    model.Title = "Active Tags";
+                }
+                else if (string.Compare(model.QueryString, "notactive", StringComparison.Ordinal) == 0)
+                {
+                    model.Tags = _db.Tags.Where(t => t.IsDeleted == true).ToList();
+                    model.Title = "All Deleted Tags";
+                }
+            }
+            else
+            {
+                model.Tags = _db.Tags.ToList();
+                model.Title = "All Tags";
+            }
+            return View(model);
         }
 
         [HttpGet]
