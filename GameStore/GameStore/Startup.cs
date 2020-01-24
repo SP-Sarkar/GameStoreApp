@@ -71,6 +71,7 @@ namespace GameStore
             {
                 routes.MapRoute(
                     name: "areas",
+                    template: "{area=Admin}/{controller=Tags}/{action=Index}/{id?}"
                 );
 
                 // routes.MapRoute(
