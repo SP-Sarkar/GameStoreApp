@@ -132,5 +132,20 @@ namespace GameStore.Areas.Admin.Controllers
             return NotFound();
         }
 
+        [HttpGet]
+        [Route("edit-game-developer/{slug}/{guid}")]
+        public async Task<IActionResult> EditGameDeveloper(string slug, string guid)
+        {
+            if (guid == null) return NotFound();
+            if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
+            var gameDeveloper = await _db.GameDevelopers.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+            if ((gameDeveloper == null) || (!string.Equals(gameDeveloper.Slug, slug))) return NotFound();
+            var gameDeveloperModel = new GameDeveloperChangeViewModel()
+            {
+                Name = gameDeveloper.Name, Description = gameDeveloper.Description, WebUrl = gameDeveloper.WebUrl, OldLogo = gameDeveloper.Logo, GuidValue = gameDeveloper.GuidValue.ToString()
+            };
+            return View(gameDeveloperModel);
+
+        }
     }
 }
