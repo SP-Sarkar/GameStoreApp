@@ -1,22 +1,28 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using GameStore.Areas.Admin.Models.ViewModels;
 using GameStore.Data;
+using GameStore.Data.Entities;
+using GameStore.Utility;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("game-dev")]
     public class GameDeveloperController : Controller
     {
         private AppDbContext _db;
-
-        public GameDeveloperController(AppDbContext db)
+        private IHostingEnvironment _env;
+        public GameDeveloperController(AppDbContext db, IHostingEnvironment env)
         {
             _db = db;
+            _env = env;
         }
 
         [HttpGet]
