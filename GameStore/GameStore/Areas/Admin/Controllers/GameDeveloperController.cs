@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GameStore.Areas.Admin.Models.ViewModels;
 using GameStore.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Areas.Admin.Controllers
 {
@@ -20,7 +21,7 @@ namespace GameStore.Areas.Admin.Controllers
 
         [HttpGet]
         [Route("")]
-        public IActionResult Index(string active = null)
+        public async Task<IActionResult> Index(string active = null)
         {
             GameDeveloperListViewModel model = new GameDeveloperListViewModel();
 
@@ -36,12 +37,12 @@ namespace GameStore.Areas.Admin.Controllers
             {
                 if (string.Compare(model.QueryString, "active", StringComparison.Ordinal) == 0)
                 {
-                    model.GameDevelopers = _db.GameDevelopers.Where(t => t.IsDeleted == false).ToList();
+                    model.GameDevelopers = await _db.GameDevelopers.Where(t => t.IsDeleted == false).ToListAsync();
                     model.Title = "Active Gaming Companies";
                 }
                 else if (string.Compare(model.QueryString, "notactive", StringComparison.Ordinal) == 0)
                 {
-                    model.GameDevelopers = _db.GameDevelopers.Where(t => t.IsDeleted == true).ToList();
+                    model.GameDevelopers = await _db.GameDevelopers.Where(t => t.IsDeleted == true).ToListAsync();
                     model.Title = "All Deleted Gaming Companies";
                 }
                 else
@@ -51,12 +52,16 @@ namespace GameStore.Areas.Admin.Controllers
             }
             else
             {
-                model.GameDevelopers = _db.GameDevelopers.ToList();
+                model.GameDevelopers = await _db.GameDevelopers.ToListAsync();
                 model.Title = "All Gaming Companies";
             }
             return View(model);
         }
 
 
+        public IActionResult CreateGameDevelopers()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
