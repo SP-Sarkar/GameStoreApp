@@ -61,9 +61,62 @@ namespace GameStore.Areas.Admin.Controllers
         }
 
 
-        public IActionResult CreateGameDevelopers()
+        [HttpGet]
+        [Route("create-game-company")]
+        public IActionResult CreateGameDevelopers() => View();
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("create-company-post")]
+        public async Task<IActionResult> CreateGameDeveloperPost(GameDeveloperChangeViewModel model)
         {
-            throw new NotImplementedException();
+            // TODO: this method is working but If image is uploaded but unable to add info to the database. 
+
+            try
+            {
+                if (!ModelState.IsValid) return View(nameof(CreateGameDevelopers), model);
+                GameDeveloper developer = new GameDeveloper();
+                if (model.Logo != null)
+                {
+                    if (model.Logo.IsImageIsValidContentType() && model.Logo.IsImageHasValidExtension() &&
+                        model.Logo.IsImageHasValidSize(512) && model.Logo.IsImageCsrfFree(512) &&
+                        model.Logo.IsImageByteReadable())
+                    {
+                        var imagePath = Path.Combine(_env.WebRootPath, "uploads", model.Logo.FileName);
+                        var stream = new FileStream(imagePath, FileMode.Create);
+                        await model.Logo.CopyToAsync(stream);
+                        developer.Logo = Path.Combine("uploads", model.Logo.FileName);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(nameof(model.Logo), "Image is not valid type or can not be readable.");
+                        return View(nameof(CreateGameDevelopers), model);
+                    }
+                }
+                else
+                {
+                    developer.Logo = Path.Combine("uploads", "noimage.jpg");
+                }
+
+                developer.Name = model.Name;
+                developer.Description = model.Description;
+                developer.WebUrl = model.WebUrl;
+                developer.CTime = DateTime.Now;
+                developer.UTime = DateTime.Now;
+                developer.GuidValue =Guid.NewGuid();
+                developer.IsDeleted = false;
+                developer.Slug = model.Name.ToSlug();
+                 _db.GameDevelopers.Add(developer);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new {active = "active"});
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                ModelState.AddModelError("", e.InnerException.Message);
+                return View(nameof(CreateGameDevelopers),model);
+            }
         }
     }
 }
