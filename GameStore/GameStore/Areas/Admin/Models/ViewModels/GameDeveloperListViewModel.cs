@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using GameStore.Data.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace GameStore.Areas.Admin.Models.ViewModels
 {
