@@ -26,5 +26,9 @@ namespace GameStore.Data.Entities
         [Required]
         [Range(0,1)]
         public bool IsDeleted { get; set; }
+
+        [Required]
+        [StringLength(220)]
+        public string Slug { get; set; }
     }
 }
