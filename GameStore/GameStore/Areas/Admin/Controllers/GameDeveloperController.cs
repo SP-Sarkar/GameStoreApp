@@ -118,5 +118,21 @@ namespace GameStore.Areas.Admin.Controllers
                 return View(nameof(CreateGameDevelopers),model);
             }
         }
+
+
+
+        [HttpGet]
+        [Route("details/{slug}/{guid}")]
+        public async Task<IActionResult> Details(string slug, string guid)
+        {
+            GameDeveloper gameDeveloper = null;
+            if (guid == null) return NotFound();
+            if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
+            gameDeveloper = await _db.GameDevelopers.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+            if ((gameDeveloper != null) && (string.Equals(gameDeveloper.Slug, slug)))
+                return View(gameDeveloper);
+            return NotFound();
+        }
+
     }
 }
