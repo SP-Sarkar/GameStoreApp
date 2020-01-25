@@ -24,7 +24,6 @@
     <Folder Include="Areas\Customer\Controllers\" />
     <Folder Include="Areas\Customer\Data\" />
     <Folder Include="Areas\Customer\Models\" />
-    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>
