@@ -1,0 +1,93 @@
+﻿@using GameStore.Utility
+@model GameStore.Areas.Admin.Models.ViewModels.GameDeveloperListViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="mt-lg-5">
+    @if (!Model.GameDevelopers.Any())
+    {
+        <div class="row">
+            <div class="col-12">
+                <h3 class="display-4">No tags has been created</h3>
+                <p>To create new tag click here.<a asp-action="CreateGameDevelopers">Create Company Profile</a></p>
+            </div>
+        </div>
+    }
+    else
+    {
+
+        <div class="row">
+            <div class="col-4">
+                <h3>@Model.Title</h3>
+            </div>
+            <div class="col-8">
+                <div class="btn-group-sm float-right" role="group" aria-label="">
+                    <a asp-action="CreateGameDevelopers" class="btn btn-dark"> Create new Company Profile</a>
+                    <a asp-action="Index" asp-route-active="active" class="btn btn-dark"> Active Company Profile</a>
+                    <a asp-action="Index" asp-route-active="notactive" class="btn btn-dark">Deleted Company Profile</a>
+                    <a asp-action="Index" class="btn btn-dark">All Company Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-hover table-bordered ">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.Logo)</th>
+                            <th>@Html.DisplayNameFor(m => m.Name)</th>
+                            <th>@Html.DisplayNameFor(m => m.NumberOProducts)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.GameDevelopers)
+                        {
+                        <tr>
+                            <td>
+                                @if (string.IsNullOrEmpty(item.Logo))
+                                {
+                                    <img class="img-thumbnail" width="30" height="30" src="~/uploads/noimage.jpg" />
+                                }
+                                else
+                                {
+                                    <img class="img-thumbnail" width="30" height="30" src="@Html.DisplayFor(model => item.Logo)"/>
+                                }
+                            </td>
+                            <td><a href="@Html.DisplayFor(model => item.WebUrl)">@Html.DisplayFor(model => item.Name)</a> </td>
+                            <td>
+                                @if (item.Games.Any())
+                                {
+                                    <a href=#><span class="badge badge-light">@item.Games.Count()</span></a>
+                                }
+                                else
+                                {
+                                    <p>No Products</p>
+                                }
+                            </td>
+                            <td>
+                                @* When using many forms in same page. Main index or list View *@
+                                <form asp-action="ActivateGameDeveloper" asp-route-guidValue="@item.GuidValue" method="post">
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="">
+                                        <a asp-action="EditGameDeveloper" asp-route-slug="@item.Slug" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Edit</a>
+                                        <a asp-action="Details" asp-route-slug="@item.Slug" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Details</a>
+                                        @if (item.IsDeleted)
+                                        {
+                                            <input type="submit" value="Activate" class="btn btn-success" />
+                                        }
+                                        <a asp-action="Delete" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+</div>
+
