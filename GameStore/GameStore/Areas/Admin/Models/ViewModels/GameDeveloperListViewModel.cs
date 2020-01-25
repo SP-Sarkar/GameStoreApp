@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -24,5 +24,24 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         public string QueryString { get; set; }
         public string Title { get; set; }
         public IEnumerable<GameDeveloper> GameDevelopers { get; set; }
+    }
+
+    public class GameDeveloperChangeViewModel
+    {
+        [Display(Name = "Game Company Name")]
+        [Required]
+        [StringLength(200)]
+        public string Name { get; set; }
+
+        [Display(Name = "Company Description")]
+        public string Description { get; set; }
+
+        [Display(Name = "Website Url")]
+        [Required]
+        [RegularExpression(@"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$")]
+        public string WebUrl { get; set; }
+
+        [Display(Name = "Company Logo")]
+        public IFormFile Logo { get; set; }
     }
 }
