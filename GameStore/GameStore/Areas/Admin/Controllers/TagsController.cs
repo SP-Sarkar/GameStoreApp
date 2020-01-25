@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GameStore.Areas.Admin.Models.ViewModels;
 using GameStore.Data;
 using GameStore.Data.Entities;
+using GameStore.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
@@ -79,9 +80,10 @@ namespace GameStore.Areas.Admin.Controllers
                 tag.UTime = DateTime.Now;
                 tag.GuidValue = Guid.NewGuid();
                 tag.IsDeleted = false;
+                tag.Slug = tag.Name.ToSlug();
                 _db.Tags.Add(tag);
                 await _db.SaveChangesAsync();
-                return RedirectToAction(nameof(Details), new { name = tag.Name, guid = tag.GuidValue.ToString() });
+                return RedirectToAction(nameof(Details), new { slug = tag.Slug, guid = tag.GuidValue.ToString() });
             }
             catch (Exception e)
             {
@@ -92,16 +94,13 @@ namespace GameStore.Areas.Admin.Controllers
 
         // GET:details
         [HttpGet]
-        [Route("details/{name}/{guid}")]
-        public async Task<IActionResult> Details(string name, string guid)
+        [Route("details/{slug}/{guid}")]
+        public async Task<IActionResult> Details(string slug, string guid)
         {
             Tag tag = null;
             if (guid == null) return NotFound();
             if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
-            else
-            {
-                tag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
-            }
+            tag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
 
             if (tag != null) return View(tag);
             return NotFound();
@@ -110,8 +109,8 @@ namespace GameStore.Areas.Admin.Controllers
 
         //GET:edit
         [HttpGet]
-        [Route(template: "edit-tag/{name}/{guid}")]
-        public async Task<IActionResult> EditTag(string name, string guid)
+        [Route(template: "edit-tag/{slug}/{guid}")]
+        public async Task<IActionResult> EditTag(string slug, string guid)
         {
             Tag tag = null;
             if (guid == null) return NotFound();
@@ -138,8 +137,9 @@ namespace GameStore.Areas.Admin.Controllers
 
                 oldTag.UTime = DateTime.Now;
                 oldTag.Name = tag.Name;
+                oldTag.Slug = tag.Name.ToSlug();
                 await _db.SaveChangesAsync();
-                return RedirectToAction(nameof(Details), new { name = oldTag.Name, guid = oldTag.GuidValue.ToString() });
+                return RedirectToAction(nameof(Details), new { slug = oldTag.Slug, guid = oldTag.GuidValue.ToString() });
             }
             catch (Exception e)
             {

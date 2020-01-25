@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameStore.Data.Entities;
+using GameStore.Utility;
 
 namespace GameStore.Data
 {
@@ -27,7 +28,8 @@ namespace GameStore.Data
                     UTime = DateTime.Now,
                     GuidValue = Guid.NewGuid(),
                     Name = "Best Seller All time",
-                    IsDeleted = false
+                    IsDeleted = false,
+                    Slug = "Best Seller All time".ToSlug()
                 },
                 new Tag()
                 {
@@ -35,7 +37,8 @@ namespace GameStore.Data
                     UTime = DateTime.Now,
                     GuidValue = Guid.NewGuid(),
                     Name = "Highest seller of this month",
-                    IsDeleted = false
+                    IsDeleted = false,
+                    Slug = "Highest seller of this month".ToSlug()
                 },
                 new Tag()
                 {
@@ -43,7 +46,8 @@ namespace GameStore.Data
                     UTime = DateTime.Now,
                     GuidValue = Guid.NewGuid(),
                     Name = "Demo",
-                    IsDeleted = false
+                    IsDeleted = false,
+                    Slug = "Demo".ToSlug()
                 },
                 new Tag()
                 {
@@ -51,7 +55,8 @@ namespace GameStore.Data
                     UTime = DateTime.Now,
                     GuidValue = Guid.NewGuid(),
                     Name = "Demo Deleted",
-                    IsDeleted = true
+                    IsDeleted = true,
+                    Slug = "Demo Deleted".ToSlug()
                 },
             };
 
