@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -146,6 +146,62 @@ namespace GameStore.Areas.Admin.Controllers
             };
             return View(gameDeveloperModel);
 
+        }
+
+        [HttpPost]
+        [Route("update-game-developer")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGameDeveloperPost(GameDeveloperChangeViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return View(nameof(EditGameDeveloper), model);
+                if (!Guid.TryParse(model.GuidValue, out Guid parsedGuid))
+                {
+                    ModelState.AddModelError("", "Not Valid Data");
+                    return View(nameof(EditGameDeveloper), model);
+                }
+                GameDeveloper developer = _db.GameDevelopers.FirstOrDefault(g => g.GuidValue == parsedGuid);
+
+                if(developer==null)
+                {
+                    ModelState.AddModelError("", "the data does not exist in storage. Create one.");
+                    return View(nameof(EditGameDeveloper), model);
+                }
+
+                if (model.Logo != null)
+                {
+                    if (model.Logo.IsImageIsValidContentType() && model.Logo.IsImageHasValidExtension() &&
+                        model.Logo.IsImageHasValidSize(512) && model.Logo.IsImageCsrfFree(512) &&
+                        model.Logo.IsImageByteReadable())
+                    {
+                        var imagePath = Path.Combine(_env.WebRootPath, "uploads", model.Logo.FileName);
+                        var stream = new FileStream(imagePath, FileMode.Create);
+                        await model.Logo.CopyToAsync(stream);
+                        developer.Logo = Path.Combine("uploads", model.Logo.FileName);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(nameof(model.Logo), "Image is not valid type or can not be readable.");
+                        return View(nameof(CreateGameDevelopers), model);
+                    }
+                }
+                
+
+                developer.Name = model.Name;
+                developer.Description = model.Description;
+                developer.WebUrl = model.WebUrl;
+                developer.UTime = DateTime.Now;
+                developer.Slug = model.Name.ToSlug();
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { active = "active" });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                ModelState.AddModelError("", e.InnerException.Message);
+                return View(nameof(EditGameDeveloper), model);
+            }
         }
     }
 }
