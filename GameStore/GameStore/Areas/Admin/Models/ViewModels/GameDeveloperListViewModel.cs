@@ -37,10 +37,15 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         [Display(Name = "Company Description")]
         public string Description { get; set; }
 
+        public string GuidValue{ get; set; }
+
         [Display(Name = "Website Url")]
         [Required]
         [RegularExpression(@"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$")]
         public string WebUrl { get; set; }
+
+        [Display(Name = "Company Old Logo")]
+        public string OldLogo { get; set; }
 
         [Display(Name = "Company Logo")]
         public IFormFile Logo { get; set; }
