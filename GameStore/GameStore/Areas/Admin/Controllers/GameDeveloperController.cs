@@ -35,10 +35,6 @@ namespace GameStore.Areas.Admin.Controllers
             model.QueryString = Request.Query[nameof(active)];
             model.GameDevelopers = null;
 
-            // fetching tags based on querystring.
-            // if queryString is active then All active tags will be displayed
-            // if queryString is nonactive then all non active querystring will be displayed.
-            // else all the tags will be displayed.
             if (model.QueryString != null)
             {
                 if (string.Compare(model.QueryString, "active", StringComparison.Ordinal) == 0)
