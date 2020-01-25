@@ -1,0 +1,60 @@
+﻿@model GameStore.Data.Entities.GameDeveloper
+@{
+    ViewData["Title"] = "Details of " + Model.Name;
+}
+
+<div class="mt-lg-5">
+    <div class="row">
+        <div class="col-6">
+            <h3>Details of @Model.Name</h3>
+        </div>
+        <div class="col-6">
+            <div class="btn-group-sm float-right" role="group" aria-label="">
+                <a asp-action="Index" asp-route-active="active" class="btn btn-dark ">All Active Game Company</a>
+                <a asp-action="CreateGameDevelopers"  class="btn btn-dark ">Create Game Company</a>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-3">
+            <img src="~/@Model.Logo" class="img-thumbnail"/>
+        </div>
+        <div class="col-9">
+            <dl>
+                <dt>@Html.DisplayNameFor(m => m.Name)</dt>
+                <dd>@Html.DisplayFor(m => m.Name)</dd>
+                <dt>@Html.DisplayNameFor(m => m.WebUrl)</dt>
+                <dd><a href="@Html.DisplayFor(m => m.WebUrl)" target="_blank">@Html.DisplayFor(m => m.WebUrl)</a> </dd>
+                <dt>@Html.DisplayNameFor(m => m.CTime)</dt>
+                <dd>@Html.DisplayFor(m => m.CTime)</dd>
+                <dt>@Html.DisplayNameFor(m => m.UTime)</dt>
+                <dd>@Html.DisplayFor(m => m.UTime)</dd>
+                <dt>@Html.DisplayNameFor(m => m.IsDeleted)</dt>
+                @if (Model.IsDeleted)
+                {
+                    <dd>Not Active</dd>
+                }
+                else
+                {
+                    <dd>Active</dd>
+                }
+                <dt>@Html.DisplayNameFor(m => m.Description)</dt>
+                <dd>@Html.DisplayFor(m => m.Description)</dd>
+            </dl>
+        </div>
+        
+        <form asp-action="ActivateGameDeveloper" method="post">
+            <div class="btn-group-sm " role="group" aria-label="">
+                <a asp-action="EditGameDeveloper" asp-route-slug="@Model.Slug" asp-route-guid="@Model.GuidValue.ToString()" class="btn btn-primary">Edit</a>
+                @if (Model.IsDeleted)
+                {
+                    <input type="hidden" asp-for="@Model.GuidValue"/>
+                    <input type="submit" value="Activate" class="btn btn-success"/>
+                }
+                <a asp-action="Delete" asp-route-guid="@Model.GuidValue.ToString()" class="btn btn-primary ">Delete</a>
+            </div>
+        </form>
+    </div>
+</div>
+
