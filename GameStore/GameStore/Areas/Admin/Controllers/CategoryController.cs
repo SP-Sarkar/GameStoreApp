@@ -61,6 +61,36 @@ namespace GameStore.Areas.Admin.Controllers
         [Route("create-category")]
         public IActionResult CreateCategory() => View();
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("create-category-post")]
+        public async Task<IActionResult> CreateCategoryPost(CategoryChangeViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return View(nameof(CreateCategory), model);
+                var category = new Category()
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    CTime = DateTime.Now,
+                    UTime = DateTime.Now,
+                    GuidValue = Guid.NewGuid(),
+                    IsDeleted = false,
+                    Slug = model.Name.ToSlug()
+                };
+                _db.Categories.Add(category);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Details),
+                    new {slug = category.Slug, guid = category.GuidValue.ToString()});
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                ModelState.AddModelError("","Creation of new category is not successful");
+                return View(nameof(CreateCategory), model);
+            }
+        }
 
     }
 }
