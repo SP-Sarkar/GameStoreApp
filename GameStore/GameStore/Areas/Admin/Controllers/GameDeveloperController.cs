@@ -214,5 +214,31 @@ namespace GameStore.Areas.Admin.Controllers
                 return View(gameDeveloper);
             return NotFound();
         }
+
+        [HttpPost]
+        [Route("deactivate-company")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteGameDeveloperPost(string guidValue)
+        {
+            try
+            {
+                if (guidValue == null) return BadRequest();
+                if (!Guid.TryParse(guidValue, out Guid parsedGuid)) return BadRequest();
+                var gameDeveloper = await _db.GameDevelopers.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+                if (gameDeveloper != null)
+                {
+                    gameDeveloper.IsDeleted = true;
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index),new{active = "active"});
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
+
     }
 }
