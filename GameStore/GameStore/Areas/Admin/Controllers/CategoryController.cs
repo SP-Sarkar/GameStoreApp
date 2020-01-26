@@ -222,5 +222,27 @@ namespace GameStore.Areas.Admin.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("delete-category-permanently")]
+        public async Task<IActionResult> DeleteCategoryPostPermanently(string guidValue)
+        {
+            try
+            {
+                if (guidValue == null) return BadRequest();
+                if (!Guid.TryParse(guidValue, out Guid parsedGuid)) return BadRequest();
+                var category = await _db.Categories.FirstOrDefaultAsync(c => c.GuidValue == parsedGuid);
+                if (category == null) return NotFound();
+                _db.Categories.Remove(category);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { active = "notactive" });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
     }
 }
