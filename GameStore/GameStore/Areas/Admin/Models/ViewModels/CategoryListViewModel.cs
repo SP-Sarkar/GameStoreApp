@@ -20,4 +20,20 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         public IEnumerable<Category> Categories { get; set; }
     }
 
+    public class CategoryChangeViewModel
+    {
+        [Display(Name = "Category Name")]
+        [Required]
+        [StringLength(200)]
+        public string Name { get; set; }
+
+        [Display(Name = "Category Description")]
+        public string Description { get; set; }
+
+        [Display(Name="Active")]
+        public bool IsDeleted { get; set; }
+
+        public string GuidValue { get; set; }
+
+    }
 }
