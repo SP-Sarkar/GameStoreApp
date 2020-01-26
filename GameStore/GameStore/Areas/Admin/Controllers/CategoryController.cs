@@ -139,5 +139,41 @@ namespace GameStore.Areas.Admin.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("update-category")]
+        public async Task<IActionResult> EditCategoryPost(CategoryChangeViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return View(nameof(EditCategory), model);
+                if (!Guid.TryParse(model.GuidValue, out Guid parsedGuid))
+                {
+                    ModelState.AddModelError("","unique Key is not set");
+                    return View(nameof(EditCategory), model);
+                }
+
+                var oldCategory = await _db.Categories.FirstOrDefaultAsync(c => c.GuidValue == parsedGuid);
+                if (oldCategory != null)
+                {
+                    oldCategory.Name = model.Name;
+                    oldCategory.Description = model.Description;
+                    oldCategory.UTime = DateTime.Now;
+                    oldCategory.Slug = model.Name.ToSlug();
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details),
+                        new {slug = oldCategory.Slug, guid = oldCategory.GuidValue.ToString()});
+                }
+                ModelState.AddModelError("", "Can not be updated. Create One.");
+                return View(nameof(EditCategory), model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                ModelState.AddModelError("", "Exception Happens");
+                return View(nameof(EditCategory), model);
+            }
+        }
     }
 }
