@@ -35,9 +35,9 @@
             <div class="col-6">
                 <div class="btn-group-sm float-right" role="group" aria-label="">
                     <a asp-action="CreateCategory" class="btn btn-dark"> Create Category</a>
-                    <a asp-action="Index" asp-route-active="active" class="btn btn-dark"> Active Tags</a>
-                    <a asp-action="Index" asp-route-active="notactive" class="btn btn-dark">Deleted Tags</a>
-                    <a asp-action="Index" class="btn btn-dark">All Tags</a>
+                    <a asp-action="Index" asp-route-active="active" class="btn btn-dark"> Active Category</a>
+                    <a asp-action="Index" asp-route-active="notactive" class="btn btn-dark">Deleted Category</a>
+                    <a asp-action="Index" class="btn btn-dark">All Category</a>
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
                                 </td>
                                 <td>
                                     @* When using many forms in same page. Main index or list View *@
-                                    <form asp-action="CreateCategory" asp-route-guidValue="@item.GuidValue" method="post">
+                                    <form asp-action="ActivateCategory" asp-route-guidValue="@item.GuidValue" method="post">
                                         <div class="btn-group btn-group-sm" role="group" aria-label="">
                                             <a asp-action="EditCategory" asp-route-slug="@item.Slug" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Edit</a>
                                             <a asp-action="Details" asp-route-slug="@item.Slug" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Details</a>
