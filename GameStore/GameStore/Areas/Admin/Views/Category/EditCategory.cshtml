@@ -1,0 +1,42 @@
+﻿@model GameStore.Areas.Admin.Models.ViewModels.CategoryChangeViewModel
+@{
+    ViewData["Title"] = "Edit " + @Model.Name;
+}
+
+<div class="mt-lg-5">
+    <div class="row">
+        <div class="col-6">
+            <h3>Edit @Model.Name</h3>
+        </div>
+        <div class="col-6">
+            <div class="btn-group-sm float-right" role="group" aria-label="">
+                <a asp-action="Index" asp-route-active="active" class="btn btn-dark ">All Active Categories</a>
+                <a asp-action="CreateCategory" class="btn btn-dark">Create Category</a>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <form asp-action="EditCategoryPost" method="post">
+                <div asp-validation-summary="ModelOnly"></div>
+                <input type="hidden" asp-for="GuidValue" />
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input type="text" asp-for="Name" class="form-control" />
+                    <span class="text-muted text-danger" asp-validation-for="Name"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description">Company Description</label>
+                    <textarea class="form-control" asp-for="Description" rows="3"></textarea>
+                    <span class="text-muted text-danger" asp-validation-for="Description"></span>
+                </div>
+                <input type="submit" value="Update Category" class="btn btn-primary" />
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
