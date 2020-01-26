@@ -111,5 +111,33 @@ namespace GameStore.Areas.Admin.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet]
+        [Route("edit-category/{slug}/{guid}")]
+        public async Task<IActionResult> EditCategory(string slug, string guid)
+        {
+            try
+            {
+                if (guid == null) return NotFound();
+                if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
+                var category = await _db.Categories.FirstOrDefaultAsync(c => c.GuidValue == parsedGuid);
+                if (category != null && string.Equals(slug, category.Slug))
+                {
+                    CategoryChangeViewModel model = new CategoryChangeViewModel()
+                    {
+                        Name = category.Name,
+                        Description = category.Description,
+                        GuidValue = category.GuidValue.ToString()
+                    };
+                    return View(model);
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
     }
 }
