@@ -1,0 +1,40 @@
+﻿@model GameStore.Areas.Admin.Models.ViewModels.CategoryChangeViewModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+
+<div class="mt-lg-5">
+    <div class="row text-center">
+        <div class="col-12">
+            <h2 class="text-primary">Do you want to delete @Model.Name ?</h2>
+            <div class="mb-lg-5 text-dark">
+                <p>If you really want to delete the @Model.Name permanently then click on <strong>Delete Permanent Button</strong><br>Or you can  deactivate the @Model.Name by clicking <strong>Deactivate button</strong></p>
+            </div>
+            <div class="row">
+                <div class="col-6 float-right">
+                    @if (!Model.IsDeleted)
+                    {
+                        <form asp-action="DeleteCategoryPost" method="post">
+                            <input type="hidden" asp-for="GuidValue" />
+                            <input type="submit" class="btn btn-danger" value="Deactivate Category" />
+                        </form>
+                       
+                    }
+                </div>
+                <div class="col-6 float-left">
+                    <form asp-action="DeleteCategoryPostPermanently" method="post">
+                        <input type="hidden" asp-for="GuidValue" />
+                        <input type="submit" class="btn btn-danger" value="Delete Category" />
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
