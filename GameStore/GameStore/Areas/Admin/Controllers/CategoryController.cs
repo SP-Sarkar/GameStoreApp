@@ -175,5 +175,30 @@ namespace GameStore.Areas.Admin.Controllers
                 return View(nameof(EditCategory), model);
             }
         }
+
+        [HttpGet]
+        [Route("delete/{guid}")]
+        public async Task<IActionResult> Delete(string guid)
+        {
+            try
+            {
+                if (guid == null) return NotFound();
+                if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
+                var category = await _db.Categories.FirstOrDefaultAsync(c => c.GuidValue == parsedGuid);
+                if (category == null) return NotFound();
+                CategoryChangeViewModel model = new CategoryChangeViewModel()
+                {
+                    Name = category.Name,
+                    GuidValue = category.GuidValue.ToString(),
+                    IsDeleted = category.IsDeleted
+                };
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
 }
