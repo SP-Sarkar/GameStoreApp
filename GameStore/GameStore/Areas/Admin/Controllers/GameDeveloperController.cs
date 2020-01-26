@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -202,6 +202,17 @@ namespace GameStore.Areas.Admin.Controllers
                 ModelState.AddModelError("", e.InnerException.Message);
                 return View(nameof(EditGameDeveloper), model);
             }
+        }
+        [HttpGet]
+        [Route("delete-company/{guid}")]
+        public async Task<IActionResult> Delete(string guid)
+        {
+            if (guid == null) return NotFound();
+            if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
+            var gameDeveloper = await _db.GameDevelopers.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+            if (gameDeveloper != null)
+                return View(gameDeveloper);
+            return NotFound();
         }
     }
 }
