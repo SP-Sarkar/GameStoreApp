@@ -200,5 +200,27 @@ namespace GameStore.Areas.Admin.Controllers
                 throw;
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("deactivate-category")]
+        public async Task<IActionResult> DeleteCategoryPost(string guidValue)
+        {
+            try
+            {
+                if (guidValue == null) return BadRequest();
+                if (!Guid.TryParse(guidValue, out Guid parsedGuid)) return BadRequest();
+                var category = await _db.Categories.FirstOrDefaultAsync(c => c.GuidValue == parsedGuid);
+                if (category == null) return NotFound();
+                category.IsDeleted = true;
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { active = "active" });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
     }
 }
