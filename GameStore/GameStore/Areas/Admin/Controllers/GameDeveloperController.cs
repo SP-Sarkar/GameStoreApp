@@ -240,5 +240,30 @@ namespace GameStore.Areas.Admin.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("delete-company")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteGameDeveloperPostPermanently(string guidValue)
+        {
+            try
+            {
+                if (guidValue == null) return BadRequest();
+                if (!Guid.TryParse(guidValue, out Guid parsedGuid)) return BadRequest();
+                var gameDeveloper = await _db.GameDevelopers.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+                if (gameDeveloper != null)
+                {
+                    _db.GameDevelopers.Remove(gameDeveloper);
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index), new { active = "notactive" });
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
+
     }
 }
