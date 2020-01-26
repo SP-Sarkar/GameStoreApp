@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameStore.Areas.Admin.Models.ViewModels;
 using GameStore.Data;
+using GameStore.Data.Entities;
+using GameStore.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -54,5 +56,11 @@ namespace GameStore.Areas.Admin.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        [Route("create-category")]
+        public IActionResult CreateCategory() => View();
+
+
     }
 }
