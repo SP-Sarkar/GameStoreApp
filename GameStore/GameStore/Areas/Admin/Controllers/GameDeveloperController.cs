@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -203,6 +203,8 @@ namespace GameStore.Areas.Admin.Controllers
                 return View(nameof(EditGameDeveloper), model);
             }
         }
+
+
         [HttpGet]
         [Route("delete-company/{guid}")]
         public async Task<IActionResult> Delete(string guid)
@@ -265,5 +267,26 @@ namespace GameStore.Areas.Admin.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("activate-company")]
+        public async Task<IActionResult> ActivateGameDeveloper(string guidValue)
+        {
+            try
+            {
+                if (guidValue == null) return BadRequest();
+                if (!Guid.TryParse(guidValue, out Guid parsedGuid)) return BadRequest();
+                var gameDeveloper = await _db.GameDevelopers.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+                if (gameDeveloper == null) return NotFound();
+                gameDeveloper.IsDeleted = false;
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { active = "active" });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
     }
 }
