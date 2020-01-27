@@ -16,7 +16,6 @@
     }
     else
     {
-
         <div class="row">
             <div class="col-6">
                 <h3>@Model.Title</h3>
@@ -37,29 +36,31 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>@Html.DisplayNameFor(m => m.Name)</th>
+                            <th>@Html.DisplayNameFor(m => m.Price)</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.Games)
                         {
-                            <tr>
-                                <td>@Html.DisplayFor(model => item.Name)</td>
-                                <td>
-                                    @* When using many forms in same page. Main index or list View *@
-                                    <form asp-action="ActivateGame" asp-route-guidValue="@item.GuidValue" method="post">
-                                        <div class="btn-group btn-group-sm" role="group" aria-label="">
-                                            <a asp-action="EditGame" asp-route-slug="@item.Slug" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Edit</a>
-                                            <a asp-action="Details" asp-route-slug="@item.Slug" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Details</a>
-                                            @if (item.IsDeleted)
-                                            {
-                                                <input type="submit" value="Activate" class="btn btn-success" />
-                                            }
-                                            <a asp-action="Delete" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-danger">Delete</a>
-                                        </div>
-                                    </form>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@Html.DisplayFor(model => item.Name)</td>
+                            <td>@Html.DisplayFor(model => item.Price)</td>
+                            <td>
+                                @* When using many forms in same page. Main index or list View *@
+                                <form asp-action="ActivateGame" asp-route-guidValue="@item.GuidValue" method="post">
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="">
+                                        <a asp-action="EditGame" asp-route-slug="@item.Slug" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Edit</a>
+                                        <a asp-action="Details" asp-route-slug="@item.Slug" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Details</a>
+                                        @if (item.IsDeleted)
+                                        {
+                                            <input type="submit" value="Activate" class="btn btn-success" />
+                                        }
+                                        <a asp-action="Delete" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
