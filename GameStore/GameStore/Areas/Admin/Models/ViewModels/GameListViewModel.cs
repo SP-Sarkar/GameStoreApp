@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using GameStore.Data.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GameStore.Areas.Admin.Models.ViewModels
 {
@@ -19,6 +21,10 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         public string QueryString { get; set; }
         public string Title { get; set; }
         public IEnumerable<Game> Games { get; set; }
+
+        [Display(Name="Tag Label")]
+        public string TagName { get; set; }
+
     }
 
     public class GameChangeViewModel
