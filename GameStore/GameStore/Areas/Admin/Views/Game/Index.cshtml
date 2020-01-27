@@ -1,0 +1,73 @@
+﻿@model GameStore.Areas.Admin.Models.ViewModels.GameListViewModel
+@{
+    ViewData["Title"] = @Model.Title;
+}
+
+
+<div class="mt-lg-5">
+    @if (!Model.Games.Any())
+    {
+        <div class="row">
+            <div class="col-12">
+                <h3 class="display-4">No Games has been created</h3>
+                <p>To create new Game click here.<a asp-action="CreateGame">Create Game</a></p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-6">
+                <h3>@Model.Title</h3>
+            </div>
+            <div class="col-6">
+                <div class="btn-group-sm float-right" role="group" aria-label="">
+                    <a asp-action="CreateGame" class="btn btn-dark"> Create Game</a>
+                    <a asp-action="Index" asp-route-active="active" class="btn btn-dark"> Active Games</a>
+                    <a asp-action="Index" asp-route-active="notactive" class="btn btn-dark">Deleted Games</a>
+                    <a asp-action="Index" class="btn btn-dark">All Games</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-hover table-bordered ">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.Name)</th>
+                            <th>@Html.DisplayNameFor(m => m.Price)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Games)
+                        {
+                        <tr>
+                            <td>@Html.DisplayFor(model => item.Name)</td>
+                            <td>@Html.DisplayFor(model => item.Price)</td>
+                            <td>
+                                @* When using many forms in same page. Main index or list View *@
+                                <form asp-action="ActivateGame" asp-route-guidValue="@item.GuidValue" method="post">
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="">
+                                        <a asp-action="EditGame" asp-route-slug="@item.Slug" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Edit</a>
+                                        <a asp-action="Details" asp-route-slug="@item.Slug" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-primary">Details</a>
+                                        @if (item.IsDeleted)
+                                        {
+                                            <input type="submit" value="Activate" class="btn btn-success" />
+                                        }
+                                        <a asp-action="Delete" asp-route-guid="@item.GuidValue.ToString()" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+</div>
+
+
