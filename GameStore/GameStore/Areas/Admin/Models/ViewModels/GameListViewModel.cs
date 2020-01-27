@@ -13,6 +13,10 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         [Display(Name = "Game Name")]
         public string Name { get; set; }
 
+        [Display(Name = "Game Price")]
+        [DataType(DataType.Currency)]
+        public decimal Price { get; set; }
+
         public string QueryString { get; set; }
         public string Title { get; set; }
         public IEnumerable<Game> Games { get; set; }
