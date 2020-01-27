@@ -113,7 +113,7 @@ namespace GameStore.Areas.Admin.Controllers
             {
                 if (guid == null) return NotFound();
                 if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
-                var gameInDb = await _db.Games.FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
+                var gameInDb = await _db.Games.Include(t=>t.Tag).FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
                 if (gameInDb == null) return NotFound();
                 if (!string.Equals(gameInDb.Slug, slug)) return NotFound();
                 return View(gameInDb);
