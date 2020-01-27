@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -143,7 +143,9 @@ namespace GameStore.Areas.Admin.Controllers
                     Description = gameInDb.Description,
                     Price = gameInDb.Price,
                     WebUrl = gameInDb.WebUrl,
-                    GuidValue = gameInDb.GuidValue.ToString()
+                    GuidValue = gameInDb.GuidValue.ToString(),
+                    TagList = new SelectList(_db.Tags.Where(t => t.IsDeleted == false).ToList(), "Id", "Name"),
+                    TagId = gameInDb.TagId
                 };
                 return View(model);
             }
@@ -180,6 +182,7 @@ namespace GameStore.Areas.Admin.Controllers
                 gameInDb.WebUrl = model.WebUrl;
                 gameInDb.UTime = DateTime.Now;
                 gameInDb.Slug = model.Name.ToSlug();
+                gameInDb.TagId = model.TagId;
 
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Details),
