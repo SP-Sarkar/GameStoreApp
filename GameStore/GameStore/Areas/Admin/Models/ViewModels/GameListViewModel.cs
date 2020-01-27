@@ -9,7 +9,6 @@ namespace GameStore.Areas.Admin.Models.ViewModels
 {
     public class GameListViewModel
     {
-        [Display(Name = "Tag Name")]
         [Display(Name = "Game Name")]
         public string Name { get; set; }
 
