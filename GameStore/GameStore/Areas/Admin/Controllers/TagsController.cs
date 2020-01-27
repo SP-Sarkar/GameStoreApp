@@ -7,7 +7,9 @@ using GameStore.Data;
 using GameStore.Data.Entities;
 using GameStore.Utility;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace GameStore.Areas.Admin.Controllers
@@ -120,26 +122,38 @@ namespace GameStore.Areas.Admin.Controllers
                 tag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
             }
 
-            if (tag != null) return View(tag);
-            return NotFound();
+            if (tag == null) return NotFound();
+            var model = new TagChangeViewModel()
+            {
+                Name = tag.Name,
+                IsDeleted = tag.IsDeleted,
+                GuidValue = tag.GuidValue.ToString()
+            };
+            return View(model);
         }
 
         //Post:Edit
         [HttpPost]
         [Route("edit-tag-post")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTagPost(Tag tag)
+        public async Task<IActionResult> EditTagPost(TagChangeViewModel model)
         {
             try
             {
-                if (!ModelState.IsValid) return View("EditTag", tag);
-                var oldTag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == tag.GuidValue);
+                if (!ModelState.IsValid) return View(nameof(EditTag), model);
+                if (!Guid.TryParse(model.GuidValue, out Guid parsedGuid))
+                {
+                    ModelState.AddModelError("","Validation key MisMatch");
+                    return View(nameof(EditTag), model);
+                }
+                var oldTag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
 
                 oldTag.UTime = DateTime.Now;
-                oldTag.Name = tag.Name;
-                oldTag.Slug = tag.Name.ToSlug();
+                oldTag.Name = model.Name;
+                oldTag.Slug = model.Name.ToSlug();
                 await _db.SaveChangesAsync();
-                return RedirectToAction(nameof(Details), new { slug = oldTag.Slug, guid = oldTag.GuidValue.ToString() });
+                return RedirectToAction(nameof(Details), 
+                    new { slug = oldTag.Slug, guid = oldTag.GuidValue.ToString()});
             }
             catch (Exception e)
             {
