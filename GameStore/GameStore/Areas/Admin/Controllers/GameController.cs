@@ -150,5 +150,45 @@ namespace GameStore.Areas.Admin.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("edit-game-post")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGamePost(GameChangeViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return View(nameof(EditGame), model);
+                if(!Guid.TryParse(model.GuidValue, out Guid parsedGuid))
+                {
+                    ModelState.AddModelError("","Not Valid Data");
+                    return View(nameof(EditGame), model);
+                }
+                var gameInDb = await _db.Games.FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
+                if (gameInDb == null)
+                {
+                    ModelState.AddModelError("", "Unique Key is not Valid");
+                    return View(nameof(EditGame), model);
+                }
+
+                gameInDb.Name = model.Name;
+                gameInDb.Description = model.Description;
+                gameInDb.Price = model.Price;
+                gameInDb.WebUrl = model.WebUrl;
+                gameInDb.UTime = DateTime.Now;
+                gameInDb.Slug = model.Name.ToSlug();
+
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Details),
+                    new {slug = gameInDb.Slug, guid = gameInDb.GuidValue.ToString()});
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                ModelState.AddModelError("", "Exception Happen");
+                return View(nameof(EditGame), model);
+            }
+        }
+
     }
 }
