@@ -43,7 +43,7 @@
                                 <a asp-area="Admin" asp-action="CreateTag" asp-controller="Tags" class="dropdown-item">Create Tags</a>
                             </div>
                         </li>
-                        
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Game Developers
@@ -53,6 +53,18 @@
                                 <a asp-area="Admin" asp-action="Index" asp-controller="GameDeveloper" asp-route-active="notactive" class="dropdown-item">All Deactivate Game Company</a>
                                 <div class="dropdown-divider"></div>
                                 <a asp-area="Admin" asp-action="CreateGameDevelopers" asp-controller="GameDeveloper" class="dropdown-item">Create Game Company</a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Games
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a asp-area="Admin" asp-action="Index" asp-controller="Game" asp-route-active="active" class="dropdown-item">All Active Games</a>
+                                <a asp-area="Admin" asp-action="Index" asp-controller="Game" asp-route-active="notactive" class="dropdown-item">All Deactivate Games</a>
+                                <div class="dropdown-divider"></div>
+                                <a asp-area="Admin" asp-action="CreateGame" asp-controller="Game" class="dropdown-item">Create Game</a>
                             </div>
                         </li>
 
