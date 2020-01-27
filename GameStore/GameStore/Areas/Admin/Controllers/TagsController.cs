@@ -269,6 +269,16 @@ namespace GameStore.Areas.Admin.Controllers
                 if (guidValue == null) return NotFound();
                 if (!Guid.TryParse(guidValue, out Guid gValue)) return NotFound();
                 var oldTag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == gValue);
+                //TODO : BUG [Should have another column to store the old tagId]
+                var games = await _db.Games.Where(t => t.TagId == oldTag.Id).ToListAsync();
+                if (games != null)
+                {
+                    foreach (Game game in games)
+                    {
+                        game.TagId = oldTag.Id;
+                    }
+                }
+
                 oldTag.IsDeleted = false;
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new {active = "active"});
