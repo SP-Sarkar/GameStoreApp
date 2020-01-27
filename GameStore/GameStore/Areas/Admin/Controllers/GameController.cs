@@ -53,5 +53,17 @@ namespace GameStore.Areas.Admin.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        [Route("create-game")]
+        public IActionResult CreateGame()
+        {
+            GameChangeViewModel model = new GameChangeViewModel()
+            {
+                Title = "Create Neg Game"
+            };
+            return View(model);
+        }
+
     }
 }
