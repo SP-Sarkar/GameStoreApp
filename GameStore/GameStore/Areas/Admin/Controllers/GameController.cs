@@ -190,5 +190,24 @@ namespace GameStore.Areas.Admin.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("delete/{guid}")]
+        public async Task<IActionResult> Delete(string guid)
+        {
+            try
+            {
+                if (guid == null) return NotFound();
+                if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
+                var gameInDb = await _db.Games.FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
+                if (gameInDb == null) return NotFound();
+                return View(gameInDb);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
     }
 }
