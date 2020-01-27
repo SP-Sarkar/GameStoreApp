@@ -19,4 +19,18 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         public string Title { get; set; }
         public IEnumerable<Tag> Tags { get; set; }
     }
+
+    public class TagChangeViewModel
+    {
+        [Display(Name = "Tag Name")]
+        [Required]
+        [StringLength(200)]
+        public string Name { get; set; }
+
+
+        [Display(Name = "Active")]
+        public bool IsDeleted { get; set; }
+
+        public string GuidValue { get; set; }
+    }
 }
