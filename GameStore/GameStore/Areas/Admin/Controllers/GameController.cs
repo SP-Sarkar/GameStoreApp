@@ -62,9 +62,11 @@ namespace GameStore.Areas.Admin.Controllers
         [Route("create-game")]
         public IActionResult CreateGame()
         {
+            IEnumerable<Tag> tags = _db.Tags.Where(t=>t.IsDeleted==false).ToList();
             GameChangeViewModel model = new GameChangeViewModel()
             {
-                Title = "Create Neg Game"
+                Title = "Create New Game",
+                TagList = new SelectList(tags, "Id","Name")
             };
             return View(model);
         }
