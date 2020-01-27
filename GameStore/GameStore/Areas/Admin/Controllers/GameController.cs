@@ -253,5 +253,30 @@ namespace GameStore.Areas.Admin.Controllers
             }
         }
 
+        // For Activating Games
+        [HttpPost]
+        [Route("activate-game")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActivateGame(string guidValue)
+        {
+            try
+            {
+                if (guidValue == null) return BadRequest();
+                if (!Guid.TryParse(guidValue, out Guid parsedGuid)) return BadRequest();
+                var gameInDb = await _db.Games.FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
+                if (gameInDb == null) return NotFound();
+                gameInDb.IsDeleted = false;
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { active = "active" });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
+
+
+        
     }
 }
