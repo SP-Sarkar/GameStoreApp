@@ -73,16 +73,25 @@ namespace GameStore.Areas.Admin.Controllers
         [HttpPost]
         [Route("create-tag-post")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateTagPost(Tag tag)
+        public async Task<IActionResult> CreateTagPost(TagChangeViewModel model)
         {
             try
             {
-                if (!ModelState.IsValid) return View("CreateTag", tag);
-                tag.CTime = DateTime.Now;
-                tag.UTime = DateTime.Now;
-                tag.GuidValue = Guid.NewGuid();
-                tag.IsDeleted = false;
-                tag.Slug = tag.Name.ToSlug();
+                if (!ModelState.IsValid)
+                {
+                    ModelState.AddModelError("","Model Validation fails");
+                    return View(nameof(CreateTag), model);
+                };
+                Tag tag = new Tag()
+                {
+                    Name = model.Name,
+                    CTime = DateTime.Now,
+                    UTime = DateTime.Now,
+                    GuidValue = Guid.NewGuid(),
+                    IsDeleted = false,
+                    Slug = model.Name.ToSlug()
+                };
+
                 _db.Tags.Add(tag);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Details), new { slug = tag.Slug, guid = tag.GuidValue.ToString() });
