@@ -101,5 +101,25 @@ namespace GameStore.Areas.Admin.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("details/{slug}/{guid}")]
+        public async Task<IActionResult> Details(string slug, string guid)
+        {
+            try
+            {
+                if (guid == null) return NotFound();
+                if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
+                var gameInDb = await _db.Games.FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
+                if (gameInDb == null) return NotFound();
+                if (!string.Equals(gameInDb.Slug, slug)) return NotFound();
+                return View(gameInDb);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
+
     }
 }
