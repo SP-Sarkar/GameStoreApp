@@ -121,5 +121,34 @@ namespace GameStore.Areas.Admin.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("edit-game/{slug}/{guid}")]
+        public async Task<IActionResult> EditGame(string slug, string guid)
+        {
+            try
+            {
+                if (guid == null) return NotFound();
+                if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
+                var gameInDb = await _db.Games.FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
+                if (gameInDb == null) return NotFound();
+                if (!string.Equals(gameInDb.Slug, slug)) return NotFound();
+                var model = new GameChangeViewModel()
+                {
+                    Title = $"Edit {gameInDb.Name}",
+                    Name = gameInDb.Name,
+                    Description = gameInDb.Description,
+                    Price = gameInDb.Price,
+                    WebUrl = gameInDb.WebUrl,
+                    GuidValue = gameInDb.GuidValue.ToString()
+                };
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
+
     }
 }
