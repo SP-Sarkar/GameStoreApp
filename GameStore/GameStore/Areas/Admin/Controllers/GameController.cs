@@ -7,6 +7,7 @@ using GameStore.Data;
 using GameStore.Data.Entities;
 using GameStore.Utility;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Areas.Admin.Controllers
@@ -34,12 +35,12 @@ namespace GameStore.Areas.Admin.Controllers
             { 
                 if(string.Equals(model.QueryString,"active"))
                 {
-                    model.Games =await _db.Games.Where(g => g.IsDeleted == false).ToListAsync();
+                    model.Games =await _db.Games.Where(g => g.IsDeleted == false).Include(t=>t.Tag).ToListAsync();
                     model.Title = "All Active Games";
                 }
                 else if (string.Equals(model.QueryString, "notactive"))
                 {
-                    model.Games = await _db.Games.Where(g => g.IsDeleted == true).ToListAsync();
+                    model.Games = await _db.Games.Where(g => g.IsDeleted == true).Include(t => t.Tag).ToListAsync();
                     model.Title = "All Deactivate Games";
                 }
                 else
@@ -49,7 +50,7 @@ namespace GameStore.Areas.Admin.Controllers
             }
             else
             {
-                model.Games = await _db.Games.ToListAsync();
+                model.Games = await _db.Games.Include(t => t.Tag).ToListAsync();
                 model.Title = "All Games";
             }
 
