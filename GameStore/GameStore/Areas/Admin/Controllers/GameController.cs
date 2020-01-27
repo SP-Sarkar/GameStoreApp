@@ -89,7 +89,7 @@ namespace GameStore.Areas.Admin.Controllers
                     UTime = DateTime.Now,
                     GuidValue = Guid.NewGuid(),
                     Slug = model.Name.ToSlug(),
-                    TagId = 2,
+                    TagId = model.TagId ,
                     GameDeveloperId = 2,
                     IsDeleted = false
                 };
