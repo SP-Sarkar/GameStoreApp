@@ -231,5 +231,27 @@ namespace GameStore.Areas.Admin.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("delete-game")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteGamePost(string guidValue)
+        {
+            try
+            {
+                if (guidValue == null) return BadRequest();
+                if (!Guid.TryParse(guidValue, out Guid parsedGuid)) return BadRequest();
+                var gameInDb = await _db.Games.FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
+                if (gameInDb == null) return NotFound();
+                _db.Games.Remove(gameInDb);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { active = "notactive" });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
+
     }
 }
