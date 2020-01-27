@@ -52,5 +52,12 @@ namespace GameStore.Areas.Admin.Models.ViewModels
 
         public string GuidValue { get; set; }
 
+        [Display(Name = "Select Tag")]
+        [Required]
+        public int TagId { get; set; }
+
+        [NotMapped]
+        public SelectList TagList { get; set; }
+
     }
 }
