@@ -236,6 +236,15 @@ namespace GameStore.Areas.Admin.Controllers
                 {
                     Tag tag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
                     if (tag == null) return NotFound();
+
+                    var games = await _db.Games.Where(t => t.TagId == tag.Id).ToListAsync();
+                    if (games != null)
+                    {
+                        foreach (Game game in games)
+                        {
+                            game.TagId = 6;
+                        }
+                    }
                     tag.IsDeleted = true;
                     await _db.SaveChangesAsync();
                     return RedirectToAction(nameof(Index), new { active = "notactive" });
