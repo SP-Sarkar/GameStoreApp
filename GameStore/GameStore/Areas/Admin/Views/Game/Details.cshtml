@@ -30,6 +30,8 @@
                 <dd>@Html.DisplayFor(m => m.Price)</dd>
                 <dt>@Html.DisplayNameFor(m => m.WebUrl)</dt>
                 <dd><a href="@Html.DisplayFor(m => m.WebUrl)" target="_blank">@Html.DisplayFor(m => m.WebUrl)</a> </dd>
+                <dt>@Html.DisplayNameFor(m => m.Tag.Name)</dt>
+                <dd><a asp-controller="Tags" asp-action="Details" asp-route-slug="@Model.Tag.Slug" asp-route-guid="@Model.Tag.GuidValue.ToString()" target="_blank">@Html.DisplayFor(m => m.Tag.Name)</a> </dd>
                 <dt>@Html.DisplayNameFor(m => m.CTime)</dt>
                 <dd>@Html.DisplayFor(m => m.CTime)</dd>
                 <dt>@Html.DisplayNameFor(m => m.UTime)</dt>
