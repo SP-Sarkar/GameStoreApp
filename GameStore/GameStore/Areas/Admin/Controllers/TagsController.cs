@@ -115,12 +115,24 @@ namespace GameStore.Areas.Admin.Controllers
         [Route("details/{slug}/{guid}")]
         public async Task<IActionResult> Details(string slug, string guid)
         {
-            Tag tag = null;
             if (guid == null) return NotFound();
             if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
-            tag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+            var tag = await _db.Tags.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
 
-            if (tag != null) return View(tag);
+            if (tag != null)
+            {
+                TagDetailsViewModel model = new TagDetailsViewModel()
+                {
+                    Name = tag.Name,
+                    Slug = tag.Slug,
+                    CTime = tag.CTime,
+                    UTime = tag.UTime,
+                    IsDeleted = tag.IsDeleted,
+                    GuidValue = tag.GuidValue.ToString(),
+                    Games = _db.Games.Where(g => g.TagId == tag.Id).ToList()
+                };
+                return View(model);
+            };
             return NotFound();
         }
 
