@@ -188,6 +188,7 @@ namespace GameStore.Areas.Admin.Controllers
                 gameInDb.UTime = DateTime.Now;
                 gameInDb.Slug = model.Name.ToSlug();
                 gameInDb.TagId = model.TagId;
+                gameInDb.GameDeveloperId = model.GameDeveloperId;
 
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Details),
