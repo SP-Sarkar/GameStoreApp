@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +33,7 @@ namespace GameStore.Areas.Admin.Controllers
             // getting the queryString
             model.QueryString = Request.Query[nameof(active)];
             model.Tags = null;
-
+            IQueryable<Tag> query = null;
             // fetching tags based on querystring.
             // if queryString is active then All active tags will be displayed
             // if queryString is nonactive then all non active querystring will be displayed.
@@ -42,12 +42,12 @@ namespace GameStore.Areas.Admin.Controllers
             {
                 if (string.Compare(model.QueryString, "active", StringComparison.Ordinal) == 0)
                 {
-                    model.Tags = _db.Tags.Where(t => t.IsDeleted == false).ToList();
+                    query = _db.Tags.Where(t => t.IsDeleted == false);
                     model.Title = "Active Tags";
                 }
                 else if (string.Compare(model.QueryString, "notactive", StringComparison.Ordinal) == 0)
                 {
-                    model.Tags = _db.Tags.Where(t => t.IsDeleted == true).ToList();
+                    query = _db.Tags.Where(t => t.IsDeleted == true);
                     model.Title = "All Deleted Tags";
                 }
                 else
@@ -57,8 +57,15 @@ namespace GameStore.Areas.Admin.Controllers
             }
             else
             {
-                model.Tags = _db.Tags.ToList();
+                query = _db.Tags;
                 model.Title = "All Tags";
+            }
+
+            model.Tags = query.ToList();
+            if (model.Tags == null) return NotFound();
+            foreach (Tag modelTag in model.Tags)
+            {
+                modelTag.Games = _db.Games.Where(g => g.TagId == modelTag.Id).ToList();
             }
             return View(model);
         }
