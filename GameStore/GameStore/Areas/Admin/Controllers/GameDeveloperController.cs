@@ -288,6 +288,16 @@ namespace GameStore.Areas.Admin.Controllers
                 var gameDeveloper = await _db.GameDevelopers.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
                 if (gameDeveloper != null)
                 {
+                    var gamesOfThisDeveloper = _db.Games.Where(g => g.GameDeveloperId == gameDeveloper.Id).ToList();
+
+                    if (gamesOfThisDeveloper != null)
+                    {
+                        foreach (Game game in gamesOfThisDeveloper)
+                        {
+                            game.IsDeleted = true;
+                            game.GameDeveloperId = 10;
+                        }
+                    }
                     _db.GameDevelopers.Remove(gameDeveloper);
                     await _db.SaveChangesAsync();
                     return RedirectToAction(nameof(Index), new { active = "notactive" });
