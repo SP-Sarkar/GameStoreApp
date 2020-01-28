@@ -50,4 +50,34 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         [Display(Name = "Company Logo")]
         public IFormFile Logo { get; set; }
     }
+
+    public class GameDetailsViewModel
+    {
+        [Display(Name = "Game Company Name")]
+        public string Name { get; set; }
+
+        [Display(Name = "Company Description")]
+        public string Description { get; set; }
+
+        public string GuidValue { get; set; }
+
+        [Display(Name = "Website Url")]
+        public string WebUrl { get; set; }
+
+        [Display(Name = "Company Old Logo")]
+        public string Logo { get; set; }
+
+        [Display(Name="Games")]
+        public ICollection<Game> Games { get; set; }
+
+        [Display(Name = "Created On")]
+        public DateTime CTime { get; set; }
+        
+        [Display(Name = "Updated On")]
+        public DateTime UTime { get; set; }
+
+        public string Slug { get; set; }
+
+        public bool IsDeleted  { get; set; }
+    }
 }
