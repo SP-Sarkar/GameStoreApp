@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,18 +33,18 @@ namespace GameStore.Areas.Admin.Controllers
 
             // getting the queryString
             model.QueryString = Request.Query[nameof(active)];
-            model.GameDevelopers = null;
+            IQueryable<GameDeveloper> gameDevelopers = null;
 
             if (model.QueryString != null)
             {
                 if (string.Compare(model.QueryString, "active", StringComparison.Ordinal) == 0)
                 {
-                    model.GameDevelopers = await _db.GameDevelopers.Where(t => t.IsDeleted == false).ToListAsync();
+                    gameDevelopers = _db.GameDevelopers.Where(t => t.IsDeleted == false);
                     model.Title = "Active Gaming Companies";
                 }
                 else if (string.Compare(model.QueryString, "notactive", StringComparison.Ordinal) == 0)
                 {
-                    model.GameDevelopers = await _db.GameDevelopers.Where(t => t.IsDeleted == true).ToListAsync();
+                    gameDevelopers =  _db.GameDevelopers.Where(t => t.IsDeleted == true);
                     model.Title = "All Deleted Gaming Companies";
                 }
                 else
