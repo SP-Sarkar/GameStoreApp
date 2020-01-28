@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -59,5 +59,8 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         [NotMapped]
         public SelectList TagList { get; set; }
 
+        [Display(Name = "Select Game Company")]
+        [Required]
+        public int GameDeveloperId { get; set; }
     }
 }
