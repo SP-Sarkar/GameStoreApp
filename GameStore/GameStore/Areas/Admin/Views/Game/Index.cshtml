@@ -38,6 +38,7 @@
                             <th>@Html.DisplayNameFor(m => m.Name)</th>
                             <th>@Html.DisplayNameFor(m => m.Price)</th>
                             <th>@Html.DisplayNameFor(m => m.TagName)</th>
+                            <th>@Html.DisplayNameFor(m => m.GameDeveloperName)</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -48,6 +49,7 @@
                             <td>@Html.DisplayFor(model => item.Name)</td>
                             <td>@Html.DisplayFor(model => item.Price)</td>
                             <td><a asp-controller="Tags" asp-action="Details" asp-route-slug="@item.Tag.Slug" asp-route-guid="@item.Tag.GuidValue.ToString()">@Html.DisplayFor(model => item.Tag.Name)</a></td>
+                            <td><a asp-controller="GameDeveloper" asp-action="Details" asp-route-slug="@item.GameDeveloper.Slug" asp-route-guid="@item.GameDeveloper.GuidValue.ToString()">@Html.DisplayFor(model => item.GameDeveloper.Name)</a></td>
                             <td>
                                 @* When using many forms in same page. Main index or list View *@
                                 <form asp-action="ActivateGame" asp-route-guidValue="@item.GuidValue" method="post">
