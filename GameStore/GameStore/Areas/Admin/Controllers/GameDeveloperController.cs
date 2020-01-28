@@ -54,9 +54,17 @@ namespace GameStore.Areas.Admin.Controllers
             }
             else
             {
-                model.GameDevelopers = await _db.GameDevelopers.ToListAsync();
+                gameDevelopers = _db.GameDevelopers;
                 model.Title = "All Gaming Companies";
             }
+
+            model.GameDevelopers = await gameDevelopers.ToListAsync();
+            if (model.GameDevelopers == null) return View(model);
+            foreach (GameDeveloper developer in model.GameDevelopers)
+            {
+                developer.Games = await _db.Games.Where(game => game.GameDeveloperId == developer.Id).ToListAsync();
+            }
+
             return View(model);
         }
 
