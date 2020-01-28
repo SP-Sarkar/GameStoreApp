@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,6 +9,10 @@ namespace GameStore.Areas.Admin.Models.ViewModels
 {
     public class TagListViewModel
     {
+        public TagListViewModel()
+        {
+            Tags = new List<Tag>();
+        }
         [Display(Name="Tag Name")]
         public string Name { get; set; }
 
