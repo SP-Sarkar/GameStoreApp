@@ -134,9 +134,26 @@ namespace GameStore.Areas.Admin.Controllers
         {
             if (guid == null) return NotFound();
             if (!Guid.TryParse(guid, out Guid parsedGuid)) return NotFound();
-            var gameDeveloper = await _db.GameDevelopers.FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+            var gameDeveloper = await _db.GameDevelopers
+                .FirstOrDefaultAsync(t => t.GuidValue == parsedGuid);
+
             if ((gameDeveloper != null) && (string.Equals(gameDeveloper.Slug, slug)))
-                return View(gameDeveloper);
+            {
+                var model = new GameDetailsViewModel()
+                {
+                    Name = gameDeveloper.Name,
+                    Logo = gameDeveloper.Logo,
+                    Description = gameDeveloper.Description,
+                    WebUrl = gameDeveloper.WebUrl,
+                    GuidValue = gameDeveloper.GuidValue.ToString(),
+                    CTime = gameDeveloper.CTime,
+                    UTime = gameDeveloper.UTime,
+                    Slug = gameDeveloper.Slug,
+                    IsDeleted = gameDeveloper.IsDeleted,
+                    Games = _db.Games.Where(g=>g.GameDeveloperId == gameDeveloper.Id).ToList()
+                };
+                return View(model);
+            }
             return NotFound();
         }
 
