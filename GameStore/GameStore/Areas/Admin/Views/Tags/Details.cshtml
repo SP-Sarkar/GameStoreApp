@@ -39,6 +39,21 @@
         <p>@Html.DisplayFor(m => m.UTime)</p>
     </div>
 
+        <div class="col-4">
+            <p>@Html.DisplayNameFor(m => m.Games)</p>
+        </div>
+        <div class="col-8">
+            @if (Model.Games.Any()) { 
+                @foreach (var game in Model.Games)
+                {
+                    <span><a asp-controller="Game" asp-action="Details" asp-route-guid="@game.GuidValue.ToString()" asp-route-slug="@game.Slug">@Html.DisplayFor(g => game.Name)</a> &nbsp; | &nbsp;</span>
+                }
+            }
+            else
+            {
+                <span>No Games</span>
+            }
+        </div>
     <div class="col-4">
         <p>@Html.DisplayNameFor(m => m.IsDeleted)</p>
     </div>
