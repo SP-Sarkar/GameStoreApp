@@ -62,5 +62,9 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         [Display(Name = "Select Game Company")]
         [Required]
         public int GameDeveloperId { get; set; }
+
+        [NotMapped]
+        public SelectList GameDeveloperList { get; set; }
+
     }
 }
