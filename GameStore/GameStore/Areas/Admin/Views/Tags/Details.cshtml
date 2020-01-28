@@ -1,4 +1,4 @@
-@model GameStore.Areas.Admin.Models.ViewModels.TagDetailsViewModel
+﻿@model GameStore.Areas.Admin.Models.ViewModels.TagDetailsViewModel
 @{
     ViewData["Title"] = "Details of " + Model.Name ;
 }
@@ -17,27 +17,27 @@
         </div>
     </div>
     <hr />
-<div class="row">
-    <div class="col-4">
-        <p>@Html.DisplayNameFor(m => m.Name)</p>
-    </div>
-    <div class="col-8">
-        <p>@Html.DisplayFor(m => m.Name)</p>
-    </div>
+    <div class="row">
+        <div class="col-4">
+            <p>@Html.DisplayNameFor(m => m.Name)</p>
+        </div>
+        <div class="col-8">
+            <p>@Html.DisplayFor(m => m.Name)</p>
+        </div>
 
-    <div class="col-4">
-        <p>@Html.DisplayNameFor(m => m.CTime)</p>
-    </div>
-    <div class="col-8">
-        <p>@Html.DisplayFor(m => m.CTime)</p>
-    </div>
+        <div class="col-4">
+            <p>@Html.DisplayNameFor(m => m.CTime)</p>
+        </div>
+        <div class="col-8">
+            <p>@Html.DisplayFor(m => m.CTime)</p>
+        </div>
 
-    <div class="col-4">
-        <p>@Html.DisplayNameFor(m => m.UTime)</p>
-    </div>
-    <div class="col-8">
-        <p>@Html.DisplayFor(m => m.UTime)</p>
-    </div>
+        <div class="col-4">
+            <p>@Html.DisplayNameFor(m => m.UTime)</p>
+        </div>
+        <div class="col-8">
+            <p>@Html.DisplayFor(m => m.UTime)</p>
+        </div>
 
         <div class="col-4">
             <p>@Html.DisplayNameFor(m => m.Games)</p>
@@ -54,27 +54,28 @@
                 <span>No Games</span>
             }
         </div>
-    <div class="col-4">
-        <p>@Html.DisplayNameFor(m => m.IsDeleted)</p>
-    </div>
-    <div class="col-8">
-        @if (Model.IsDeleted)
-        {
-            <p>Tag is on Delete</p>
-        }
-        else
-        {<p>Tag is on Active</p>}
-    </div>
-    <form asp-action="ActivateTag" method="post">
-        <div class="btn-group-sm " role="group" aria-label="">
-            <a asp-action="EditTag" asp-route-slug="@Model.Slug" asp-route-guid="@Model.GuidValue.ToString()" class="btn btn-primary">Edit</a>
+
+        <div class="col-4">
+            <p>@Html.DisplayNameFor(m => m.IsDeleted)</p>
+        </div>
+        <div class="col-8">
             @if (Model.IsDeleted)
             {
-                <input type="hidden" asp-for="@Model.GuidValue" />
-                <input type="submit" value="Activate" class="btn btn-success" />
+                <p>Tag is on Delete</p>
             }
-            <a asp-action="Delete" asp-route-guid="@Model.GuidValue.ToString()" class="btn btn-primary ">Delete</a>
+            else
+            {<p>Tag is on Active</p>}
         </div>
-    </form>
-</div>
+        <form asp-action="ActivateTag" method="post">
+            <div class="btn-group-sm " role="group" aria-label="">
+                <a asp-action="EditTag" asp-route-slug="@Model.Slug" asp-route-guid="@Model.GuidValue.ToString()" class="btn btn-primary">Edit</a>
+                @if (Model.IsDeleted)
+                {
+                    <input type="hidden" asp-for="@Model.GuidValue" />
+                    <input type="submit" value="Activate" class="btn btn-success" />
+                }
+                <a asp-action="Delete" asp-route-guid="@Model.GuidValue.ToString()" class="btn btn-primary ">Delete</a>
+            </div>
+        </form>
+    </div>
 </div>
