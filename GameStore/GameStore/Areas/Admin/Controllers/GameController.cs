@@ -148,7 +148,9 @@ namespace GameStore.Areas.Admin.Controllers
                     WebUrl = gameInDb.WebUrl,
                     GuidValue = gameInDb.GuidValue.ToString(),
                     TagList = new SelectList(_db.Tags.Where(t => t.IsDeleted == false).ToList(), "Id", "Name"),
-                    TagId = gameInDb.TagId
+                    TagId = gameInDb.TagId,
+                    GameDeveloperList = new SelectList(_db.GameDevelopers.Where(gd =>gd.IsDeleted == false).ToList(), "Id", "Name"),
+                    GameDeveloperId = gameInDb.GameDeveloperId
                 };
                 return View(model);
             }
