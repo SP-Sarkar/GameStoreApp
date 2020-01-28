@@ -32,6 +32,8 @@
                 <dd><a href="@Html.DisplayFor(m => m.WebUrl)" target="_blank">@Html.DisplayFor(m => m.WebUrl)</a> </dd>
                 <dt>@Html.DisplayNameFor(m => m.Tag.Name)</dt>
                 <dd><a asp-controller="Tags" asp-action="Details" asp-route-slug="@Model.Tag.Slug" asp-route-guid="@Model.Tag.GuidValue.ToString()" target="_blank">@Html.DisplayFor(m => m.Tag.Name)</a> </dd>
+                <dt>@Html.DisplayNameFor(m => m.GameDeveloper.Name)</dt>
+                <dd><a asp-controller="GameDeveloper" asp-action="Details" asp-route-slug="@Model.GameDeveloper.Slug" asp-route-guid="@Model.GameDeveloper.GuidValue.ToString()" target="_blank">@Html.DisplayFor(m => m.GameDeveloper.Name)</a> </dd>
                 <dt>@Html.DisplayNameFor(m => m.CTime)</dt>
                 <dd>@Html.DisplayFor(m => m.CTime)</dd>
                 <dt>@Html.DisplayNameFor(m => m.UTime)</dt>
