@@ -25,6 +25,9 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         [Display(Name="Tag Label")]
         public string TagName { get; set; }
 
+        [Display(Name = "Developer Name")]
+        public string GameDeveloperName { get; set; }
+
     }
 
     public class GameChangeViewModel
