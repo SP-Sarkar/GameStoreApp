@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,17 +31,17 @@ namespace GameStore.Areas.Admin.Controllers
             var model = new GameListViewModel();
 
             model.QueryString = Request.Query["active"];
-            model.Games = null;
+            IQueryable<Game> games = null;
             if(model.QueryString != null) 
             { 
                 if(string.Equals(model.QueryString,"active"))
                 {
-                    model.Games =await _db.Games.Where(g => g.IsDeleted == false).Include(t=>t.Tag).ToListAsync();
+                    games = _db.Games.Where(g => g.IsDeleted == false).Include(t=>t.Tag).Include(gd=>gd.GameDeveloper);
                     model.Title = "All Active Games";
                 }
                 else if (string.Equals(model.QueryString, "notactive"))
                 {
-                    model.Games = await _db.Games.Where(g => g.IsDeleted == true).Include(t => t.Tag).ToListAsync();
+                    games =  _db.Games.Where(g => g.IsDeleted == true).Include(t => t.Tag).Include(gd => gd.GameDeveloper);
                     model.Title = "All Deactivate Games";
                 }
                 else
@@ -51,10 +51,11 @@ namespace GameStore.Areas.Admin.Controllers
             }
             else
             {
-                model.Games = await _db.Games.Include(t => t.Tag).ToListAsync();
+                games = _db.Games.Include(t => t.Tag).Include(gd => gd.GameDeveloper);
                 model.Title = "All Games";
             }
 
+            model.Games = await games.ToListAsync();
             return View(model);
         }
 
