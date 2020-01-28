@@ -93,7 +93,7 @@ namespace GameStore.Areas.Admin.Controllers
                     GuidValue = Guid.NewGuid(),
                     Slug = model.Name.ToSlug(),
                     TagId = model.TagId ,
-                    GameDeveloperId = 2,
+                    GameDeveloperId = model.GameDeveloperId,
                     IsDeleted = false
                 };
                 _db.Games.Add(game);
