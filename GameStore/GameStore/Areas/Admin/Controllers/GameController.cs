@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,10 +63,13 @@ namespace GameStore.Areas.Admin.Controllers
         public IActionResult CreateGame()
         {
             IEnumerable<Tag> tags = _db.Tags.Where(t=>t.IsDeleted==false).ToList();
+            IEnumerable<GameDeveloper> gameDevelopers = _db.GameDevelopers
+                .Where(gd => gd.IsDeleted == false).ToList();
             GameChangeViewModel model = new GameChangeViewModel()
             {
                 Title = "Create New Game",
-                TagList = new SelectList(tags, "Id","Name")
+                TagList = new SelectList(tags, "Id","Name"),
+                GameDeveloperList = new SelectList(gameDevelopers, "Id", "Name")
             };
             return View(model);
         }
