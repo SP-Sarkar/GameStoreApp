@@ -25,6 +25,20 @@
                 <dd>@Html.DisplayFor(m => m.Name)</dd>
                 <dt>@Html.DisplayNameFor(m => m.WebUrl)</dt>
                 <dd><a href="@Html.DisplayFor(m => m.WebUrl)" target="_blank">@Html.DisplayFor(m => m.WebUrl)</a> </dd>
+                <dt>@Html.DisplayNameFor(m => m.Games)</dt>
+                <dd>
+                    @if (Model.Games.Any())
+                    {
+                        @foreach (var game in Model.Games)
+                        {
+                            <a asp-controller="Game" asp-action="Details" asp-route-guid="@game.GuidValue.ToString()" asp-route-slug="@game.Slug">@Html.DisplayFor(m => game.Name)</a>
+                        }
+                    }
+                    else
+                    {
+                        <text>No Game</text>
+                    }
+                </dd>
                 <dt>@Html.DisplayNameFor(m => m.CTime)</dt>
                 <dd>@Html.DisplayFor(m => m.CTime)</dd>
                 <dt>@Html.DisplayNameFor(m => m.UTime)</dt>
