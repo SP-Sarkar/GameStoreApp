@@ -63,9 +63,16 @@ namespace GameStore.Areas.Admin.Controllers
         [Route("create-game")]
         public IActionResult CreateGame()
         {
-            IEnumerable<Tag> tags = _db.Tags.Where(t=>t.IsDeleted==false).ToList();
+            IEnumerable<Tag> tags = _db.Tags
+                .Where(t=>t.IsDeleted==false)
+                .ToList();
             IEnumerable<GameDeveloper> gameDevelopers = _db.GameDevelopers
-                .Where(gd => gd.IsDeleted == false).ToList();
+                .Where(gd => gd.IsDeleted == false)
+                .ToList();
+            IEnumerable<SelectListItem> gameCategories = _db.Categories
+                .Where(c => c.IsDeleted == false)
+                .Select(c => new SelectListItem() {Text = c.Name, Value = c.Id.ToString()})
+                .ToList();
             GameChangeViewModel model = new GameChangeViewModel()
             {
                 Title = "Create New Game",
