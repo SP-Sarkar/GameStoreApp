@@ -91,6 +91,13 @@ namespace GameStore.Areas.Admin.Controllers
             try
             {
                 if (!ModelState.IsValid) return View(nameof(CreateGame), model);
+
+                //way to select many result based on multiple id [unsorted]
+                var category = _db.Categories.Where(c => model.GameCategoryId.Contains(c.Id)).ToList();
+
+                // Another way to select many result based on multiple id [Sorted]
+                // var anotherCategory = _db.Categories.Join(model.GameCategoryId, c => c.Id, s => s, ((c, s) => c)).ToList();
+
                 Game game = new Game
                 {
                     Name = model.Name,
@@ -105,6 +112,16 @@ namespace GameStore.Areas.Admin.Controllers
                     GameDeveloperId = model.GameDeveloperId,
                     IsDeleted = false
                 };
+
+                foreach (Category cat in category)
+                {
+                    game.GameCategories.Add(new GameCategory()
+                    {
+                        Category = cat,
+                        Game = game
+                    });
+                }
+
                 _db.Games.Add(game);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Details), new {slug = game.Slug, guid = game.GuidValue.ToString()});
