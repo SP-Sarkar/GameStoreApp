@@ -1,4 +1,5 @@
-﻿@model GameStore.Data.Entities.Game
+﻿@using GameStore.Data.Entities
+@model GameStore.Areas.Admin.Models.ViewModels.GameDetailViewModel
 @{
     ViewData["Title"] = "Details " + Model.Name;
 }
@@ -34,6 +35,18 @@
                 <dd><a asp-controller="Tags" asp-action="Details" asp-route-slug="@Model.Tag.Slug" asp-route-guid="@Model.Tag.GuidValue.ToString()" target="_blank">@Html.DisplayFor(m => m.Tag.Name)</a> </dd>
                 <dt>@Html.DisplayNameFor(m => m.GameDeveloper.Name)</dt>
                 <dd><a asp-controller="GameDeveloper" asp-action="Details" asp-route-slug="@Model.GameDeveloper.Slug" asp-route-guid="@Model.GameDeveloper.GuidValue.ToString()" target="_blank">@Html.DisplayFor(m => m.GameDeveloper.Name)</a> </dd>
+                
+                <dt>@Html.DisplayNameFor(m => m.GameCategoryId)</dt>
+                <dd>
+                    @if (Model.GameCategoryList.Any())
+                    {
+                        foreach (GameCategory gameCategory in Model.GameCategoryList)
+                        {
+                            <a asp-controller="Category" asp-action="Details" asp-route-slug="@gameCategory.Category.Slug" asp-route-guid="@gameCategory.Category.GuidValue.ToString()" target="_blank">@Html.DisplayFor(m => gameCategory.Category.Name)</a>
+                        }
+                    }
+                </dd>
+
                 <dt>@Html.DisplayNameFor(m => m.CTime)</dt>
                 <dd>@Html.DisplayFor(m => m.CTime)</dd>
                 <dt>@Html.DisplayNameFor(m => m.UTime)</dt>
