@@ -77,7 +77,8 @@ namespace GameStore.Areas.Admin.Controllers
             {
                 Title = "Create New Game",
                 TagList = new SelectList(tags, "Id","Name"),
-                GameDeveloperList = new SelectList(gameDevelopers, "Id", "Name")
+                GameDeveloperList = new SelectList(gameDevelopers, "Id", "Name"),
+                GameCategoryList = gameCategories
             };
             return View(model);
         }
