@@ -75,4 +75,50 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         [NotMapped]
         public IEnumerable<SelectListItem> GameCategoryList { get; set; }
     }
+
+
+    public class GameDetailViewModel
+    {
+        public string Title { get; set; }
+
+        [Display(Name = "Game Name")]
+        public string Name { get; set; }
+
+        [Display(Name = "Website URL")]
+        public string WebUrl { get; set; }
+
+        [Display(Name = "Game Price")]
+        [DataType(DataType.Currency)]
+        public decimal Price { get; set; }
+
+        [Display(Name = "Game Description")]
+        public string Description { get; set; }
+
+        public string GuidValue { get; set; }
+
+        [Display(Name = "Created On")]
+        public DateTime CTime { get; set; }
+        [Display(Name = "Updated  On")]
+        public DateTime UTime { get; set; }
+        public bool IsDeleted { get; set; }
+        public string Slug { get; set; }
+        
+
+
+
+        [Display(Name = "Select Tag")]
+        public int TagId { get; set; }
+
+        public Tag Tag { get; set; }
+
+        [Display(Name = "Select Game Company")]
+        public int GameDeveloperId { get; set; }
+
+        public GameDeveloper GameDeveloper { get; set; }
+
+        [Display(Name = "Game Category")]
+        public int[] GameCategoryId { get; set; }
+
+        public IEnumerable<GameCategory> GameCategoryList { get; set; }
+    }
 }
