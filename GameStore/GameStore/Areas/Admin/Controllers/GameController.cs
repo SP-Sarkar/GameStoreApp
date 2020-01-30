@@ -198,7 +198,10 @@ namespace GameStore.Areas.Admin.Controllers
                     GameCategoryList = _db.Categories
                         .Where(c => c.IsDeleted == false)
                         .Select(c => new SelectListItem() { Text = c.Name, Value = c.Id.ToString()}).ToList(),
+                    // loading selected values
+                    GameCategoryId = _db.GameCategories.Where(c=>c.GameId == gameInDb.Id).Select(s=>s.CategoryId).ToList()
                 };
+
                 return View(model);
             }
             catch (Exception e)
