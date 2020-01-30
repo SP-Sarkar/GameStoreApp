@@ -7,9 +7,13 @@ namespace GameStore.Data.Entities
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [Key]
         public int GameId { get; set; }
-        public Game Game { get; set; }
+        [Key]
         public int CategoryId { get; set; }
+
         public Category Category { get; set; }
+        public Game Game { get; set; }
     }
 }
