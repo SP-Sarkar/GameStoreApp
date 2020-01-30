@@ -224,7 +224,6 @@ namespace GameStore.Areas.Admin.Controllers
                     ModelState.AddModelError("","Not Valid Data");
                     return View(nameof(EditGame), model);
                 }
-                var gameInDb = await _db.Games.FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
                 var gameInDb = await _db.Games.Include(gc=>gc.GameCategories).FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
                 if (gameInDb == null)
                 {
@@ -243,6 +242,23 @@ namespace GameStore.Areas.Admin.Controllers
                 gameInDb.Slug = model.Name.ToSlug();
                 gameInDb.TagId = model.TagId;
                 gameInDb.GameDeveloperId = model.GameDeveloperId;
+                gameInDb.GameCategories = model.GameCategoryId.Select(gc => new GameCategory()
+                {
+                    GameId = gameInDb.Id, CategoryId = gc
+                }).ToList();
+
+
+                // Perfectly working
+                // var category = _db.Categories.Where(c => model.GameCategoryId.Contains(c.Id)).ToList();
+                // foreach (Category cat in category)
+                // {
+                //     gameInDb.GameCategories.Add(new GameCategory()
+                //     {
+                //         Category = cat,
+                //         Game = gameInDb
+                //     });
+                // }
+                _db.SaveChanges();
 
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Details),
