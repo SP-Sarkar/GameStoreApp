@@ -232,6 +232,9 @@ namespace GameStore.Areas.Admin.Controllers
                     return View(nameof(EditGame), model);
                 }
 
+                _db.GameCategories.RemoveRange(gameInDb.GameCategories);
+                _db.SaveChanges();
+
                 gameInDb.Name = model.Name;
                 gameInDb.Description = model.Description;
                 gameInDb.Price = model.Price;
