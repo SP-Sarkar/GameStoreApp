@@ -4,14 +4,16 @@ using GameStore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GameStore.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200130043847_AddPrimaryKeyIntoGameCategory")]
+    partial class AddPrimaryKeyIntoGameCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,7 +111,9 @@ namespace GameStore.Data.Migrations
 
                     b.HasKey("GameId", "CategoryId");
 
-                    b.HasAlternateKey("CategoryId", "GameId", "Id");
+                    b.HasAlternateKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("GameCategories");
                 });
