@@ -225,6 +225,7 @@ namespace GameStore.Areas.Admin.Controllers
                     return View(nameof(EditGame), model);
                 }
                 var gameInDb = await _db.Games.FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
+                var gameInDb = await _db.Games.Include(gc=>gc.GameCategories).FirstOrDefaultAsync(g => g.GuidValue == parsedGuid);
                 if (gameInDb == null)
                 {
                     ModelState.AddModelError("", "Unique Key is not Valid");
