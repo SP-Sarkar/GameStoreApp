@@ -14,7 +14,7 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         [Display(Name = "Game Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Game Price")]
+        [Display(Name = "Price")]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
@@ -22,10 +22,10 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         public string Title { get; set; }
         public IEnumerable<Game> Games { get; set; }
 
-        [Display(Name="Tag Label")]
+        [Display(Name="Tag ")]
         public string TagName { get; set; }
 
-        [Display(Name = "Developer Name")]
+        [Display(Name = "Developer")]
         public string GameDeveloperName { get; set; }
 
     }
