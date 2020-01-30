@@ -70,7 +70,8 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         public SelectList GameDeveloperList { get; set; }
 
         [Display(Name="Game Category")]
-        public int[] GameCategoryId { get; set; }
+        [Required]
+        public IList<int> GameCategoryId { get; set; }
 
         [NotMapped]
         public IEnumerable<SelectListItem> GameCategoryList { get; set; }
@@ -117,7 +118,7 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         public GameDeveloper GameDeveloper { get; set; }
 
         [Display(Name = "Game Category")]
-        public int[] GameCategoryId { get; set; }
+        public IList<int> GameCategoryId { get; set; }
 
         public IEnumerable<GameCategory> GameCategoryList { get; set; }
     }
