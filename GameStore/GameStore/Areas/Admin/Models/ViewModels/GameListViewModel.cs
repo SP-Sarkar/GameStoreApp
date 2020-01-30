@@ -28,6 +28,9 @@ namespace GameStore.Areas.Admin.Models.ViewModels
         [Display(Name = "Developer")]
         public string GameDeveloperName { get; set; }
 
+        [Display(Name="Category")]
+        public ICollection<GameCategory> GameCategories { get; set; }
+
     }
 
     public class GameChangeViewModel
