@@ -36,12 +36,12 @@ namespace GameStore.Areas.Admin.Controllers
             { 
                 if(string.Equals(model.QueryString,"active"))
                 {
-                    games = _db.Games.Where(g => g.IsDeleted == false).Include(t=>t.Tag).Include(gd=>gd.GameDeveloper);
+                    model.Games = await _db.Games.Where(g => g.IsDeleted == false).Include(gc => gc.GameCategories).ThenInclude(c => c.Category).Include(t => t.Tag).Include(gd => gd.GameDeveloper).ToListAsync();
                     model.Title = "All Active Games";
                 }
                 else if (string.Equals(model.QueryString, "notactive"))
                 {
-                    games =  _db.Games.Where(g => g.IsDeleted == true).Include(t => t.Tag).Include(gd => gd.GameDeveloper);
+                    model.Games = await _db.Games.Where(g => g.IsDeleted ).Include(gc => gc.GameCategories).ThenInclude(c => c.Category).Include(t => t.Tag).Include(gd => gd.GameDeveloper).ToListAsync();
                     model.Title = "All Deactivate Games";
                 }
                 else
@@ -51,11 +51,10 @@ namespace GameStore.Areas.Admin.Controllers
             }
             else
             {
-                games = _db.Games.Include(t => t.Tag).Include(gd => gd.GameDeveloper);
+                model.Games = await _db.Games.Include(gc => gc.GameCategories).ThenInclude(c => c.Category).Include(t => t.Tag).Include(gd => gd.GameDeveloper).ToListAsync();
                 model.Title = "All Games";
             }
 
-            model.Games = await games.ToListAsync();
             return View(model);
         }
 
