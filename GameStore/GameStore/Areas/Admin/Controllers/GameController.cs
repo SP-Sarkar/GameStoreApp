@@ -193,7 +193,11 @@ namespace GameStore.Areas.Admin.Controllers
                     TagList = new SelectList(_db.Tags.Where(t => t.IsDeleted == false).ToList(), "Id", "Name"),
                     TagId = gameInDb.TagId,
                     GameDeveloperList = new SelectList(_db.GameDevelopers.Where(gd =>gd.IsDeleted == false).ToList(), "Id", "Name"),
-                    GameDeveloperId = gameInDb.GameDeveloperId
+                    GameDeveloperId = gameInDb.GameDeveloperId,
+                    // Displaying list of categories
+                    GameCategoryList = _db.Categories
+                        .Where(c => c.IsDeleted == false)
+                        .Select(c => new SelectListItem() { Text = c.Name, Value = c.Id.ToString()}).ToList(),
                 };
                 return View(model);
             }
